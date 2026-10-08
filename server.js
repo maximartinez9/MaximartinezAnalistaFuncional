@@ -53,8 +53,8 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      fontSrc: ['https://gstatic.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://googleapis.com"],
+      fontSrc: ["'self'", "https://gstatic.com"],
       imgSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
       scriptSrcAttr: ["'unsafe-inline'"]
