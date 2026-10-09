@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>FUNTION ANALYTS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f2;--sf:#fff;--tx:#1b2521;--mu:#66736d;--ln:#d5dcd7;--ac:#0d6b5c;--ac2:#e0f0ec;--wa:#b4570b;--er:#b3261e;--ok:#18794e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}}
+:root[data-theme="dark"]{--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 'Source Sans 3',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 .5rem;line-height:1.15}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{background:var(--ac);color:var(--bg);border:0;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
+.btn.g{background:transparent;color:var(--ac);border:1px solid var(--ln)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nv:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+input,select,textarea{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:6px;padding:.5rem;margin:.2rem 0 .7rem}
+textarea{min-height:84px;resize:vertical}label{font-weight:600;font-size:.9rem}
+.login{max-width:520px;margin:6vh auto;padding:1.2rem}
+.logo{font:700 2rem 'Bricolage Grotesque';letter-spacing:-.02em}.logo i{color:var(--ac);font-style:normal}
+.roles{display:grid;gap:.5rem;margin:1rem 0}.roles button{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:.7rem;cursor:pointer}
+.roles button:hover{border-color:var(--ac)}.roles b{display:block}.roles span{color:var(--mu);font-size:.88rem}
+.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+aside{background:var(--sf);border-right:1px solid var(--ln);padding:1rem .7rem;display:flex;flex-direction:column;gap:.15rem}
+.nv{background:none;border:0;text-align:left;padding:.5rem .6rem;border-radius:6px;cursor:pointer}.nv.on{background:var(--ac2);color:var(--ac);font-weight:600}
+main{padding:1.2rem;min-width:0;max-width:980px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.pill{background:var(--ac2);color:var(--ac);border-radius:99px;padding:.15rem .6rem;font-size:.82rem;font-weight:600}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:1rem;margin-bottom:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+.bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden}.bar div{height:100%;background:var(--ac)}
+.big{font:700 2.4rem 'Bricolage Grotesque'}.mu{color:var(--mu);font-size:.9rem}
+.ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid var(--ln);padding:.35rem .5rem;text-align:left}
+pre{background:var(--bg);border:1px solid var(--ln);padding:.7rem;border-radius:6px;overflow-x:auto;font-size:.85rem}
+.chk{display:flex;gap:.5rem;align-items:flex-start;margin:.25rem 0}.chk input{width:auto;margin:.3rem 0 0}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
+.mbar,.scrim{display:none}
+aside{position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto}
+.burger{width:44px;height:44px;border:1px solid var(--ln);background:var(--sf);border-radius:8px;cursor:pointer;display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0;margin:0;flex:none}
+.burger span{display:block;width:20px;height:2px;background:var(--tx);border-radius:2px;transition:transform .2s,opacity .2s}
+.app.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.app.open .burger span:nth-child(2){opacity:0}
+.app.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.burger:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(max-width:720px){
+.app{display:block}
+.mbar{display:flex;align-items:center;gap:.7rem;position:sticky;top:0;z-index:20;background:var(--sf);border-bottom:1px solid var(--ln);padding:.5rem 16px;padding-top:calc(.5rem + env(safe-area-inset-top,0px))}
+.mbar .logo{font-size:1.15rem}
+aside{position:fixed;top:0;left:0;bottom:0;width:min(82vw,290px);height:auto;z-index:40;transform:translateX(-105%);visibility:hidden;transition:transform .25s ease,visibility .25s;border-right:1px solid var(--ln);padding:1rem .7rem;padding-top:calc(1rem + env(safe-area-inset-top,0px))}
+.app.open aside{transform:none;visibility:visible;box-shadow:0 0 30px rgba(0,0,0,.35)}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30}
+.app.open .scrim{display:block}
+.nv{padding:.8rem .7rem;font-size:1.05rem;min-height:44px}
+main{padding:16px}
+.top h1{font-size:1.5rem}
+.big{font-size:2rem}
+.card{padding:.85rem}
+.btn{min-height:44px}
+.row>*{min-width:100%}
+.login{margin:3vh auto;padding:16px}
+}
+@media(prefers-reduced-motion:reduce){aside,.burger span{transition:none}}
+</style></head><body><div id="root"></div>
+<script>
+const ROLES={
+admin:{n:'Administrador',d:'Acceso total, usuarios y configuración',nav:['dash','req','bd','flow','qa','int','team'],edit:1},
+soporte:{n:'Soporte',d:'Resuelve bugs/fixes y asiste a analistas',nav:['dash','req','qa','team'],edit:0},
+dev:{n:'Desarrollador',d:'Ve cambios, deja avances y comenta dudas',nav:['dash','req','bd','qa'],edit:0},
+test:{n:'Test (prueba gratuita)',d:'Funciones limitadas por tokens',nav:['dash','req','bd','flow','qa'],edit:1},
+cliente:{n:'Cliente (pago)',d:'Todo desbloqueado, asigna a PO y equipo',nav:['dash','req','bd','flow','qa','int','team'],edit:1}};
+const NAV={dash:'Panel',req:'Requerimientos',bd:'Modelo de datos',flow:'Flujogramas',qa:'Pruebas y release',int:'Integraciones',team:'Equipo y soporte'};
+const S={role:null,view:'dash',cur:0,tokens:5,
+reqs:[{t:'Recuperar contraseña',obj:'Permitir al usuario recuperar su acceso.',alc:'Envío de mail con enlace temporal.',cu:'CU1 Solicitar recuperación\nCU2 Restablecer contraseña',ca:'Dado un usuario registrado, cuando solicita recuperación, entonces recibe un mail\nEl proceso debe ser rápido y fácil',par:'',asig:'Sin asignar',com:[{w:'Desarrollador',x:'¿Cuánto dura el enlace temporal?'}],ok:0}],
+tables:[{n:'usuarios',c:[['id','INT','No','PK'],['email','VARCHAR(120)','No','Único'],['activo','BIT','No','']]}],
+qa:{'Pruebas técnicas':['Casos de prueba derivados de criterios','Cobertura de casos de uso ≥ 90%','Pruebas de datos límite','Evidencia adjunta'],'Pruebas UAT':['Usuarios clave definidos','Guion UAT aprobado','Defectos críticos cerrados','Firma del Product Owner'],'Prueba piloto':['Grupo piloto definido','Métricas de éxito acordadas','Plan de marcha atrás','Feedback consolidado'],'Deploy':['Ventana de despliegue comunicada','Checklist de release','Backup previo','Aprobación del líder'],'Verificación QA':['Smoke test en producción','Regresión sobre módulos afectados','Monitoreo 24 h','Cierre y lecciones aprendidas']},
+qd:{},ints:{}};
+const INT=[['Jira','Sincronizar historias y épicas del backlog'],['Confluence','Publicar la documentación funcional'],['Azure DevOps','Work items, boards y pipelines'],['IA (Claude, OpenAI)','Sugerencias y redacción asistida'],['Azure AD / SSO','Login corporativo'],['Notion / Trello','Backlog y documentación']];
+const e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+function lines(s){return s.split('\n').map(x=>x.trim()).filter(Boolean)}
+function analyze(r){
+ const amb=(`${r.obj} ${r.alc} ${r.ca}`.match(/\b(rápido|fácil|adecuado|flexible|amigable|etc|óptimo|cuando sea posible)\b/gi)||[]);
+ const cu=lines(r.cu),ca=lines(r.ca),gwt=ca.filter(x=>/dado.*cuando.*entonces/i.test(x));
+ const sec={'Objetivo':r.obj.length>=40?100:r.obj?50:0,'Alcance':(r.alc?50:0)+(/fuera de alcance/i.test(r.alc)?50:0),'Casos de uso':Math.min(100,cu.length*34),'Criterios de aceptación':ca.length?Math.round(100*gwt.length/ca.length):0,'Parámetros':r.par.length>=20?100:r.par?50:0};
+ const tips=[];
+ if(sec.Objetivo<100)tips.push('Objetivo: explicá qué problema resuelve y para quién (mín. 40 caracteres).');
+ if(sec.Alcance<100)tips.push('Alcance: agregá una línea "Fuera de alcance" para evitar sobrealcance.');
+ if(sec['Casos de uso']<100)tips.push(`Casos de uso: hay ${cu.length}; sumá flujos alternativos y de error (mín. 3).`);
+ if(sec['Criterios de aceptación']<100)tips.push(`Criterios: ${ca.length-gwt.length} no siguen el formato Dado / Cuando / Entonces o no son verificables.`);
+ if(sec.Parámetros<100)tips.push('Parámetros: definí reglas, límites, tiempos de vida y valores configurables.');
+ if(amb.length)tips.push('Ambigüedad detectada: '+[...new Set(amb.map(x=>x.toLowerCase()))].join(', ')+'. Reemplazá por valores medibles.');
+ const avg=Object.values(sec).reduce((a,b)=>a+b,0)/5,score=Math.max(0,Math.round(avg-Math.min(30,amb.length*8)));
+ return{sec,tips,score}}
+const col=n=>n>=80?'ok':n>=50?'wa':'er';
+function login(){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p>Del pedido del Product Owner al release, con el análisis funcional bajo control.</p>
+<label>Correo</label><input value="analista@empresa.com" aria-label="Correo"><label>Contraseña</label><input type="password" value="••••••••">
+<p class="mu">Demo: elegí un perfil para entrar. En producción el acceso se valida en servidor (ver documentación técnica).</p>
+<div class="roles">${Object.entries(ROLES).map(([k,v])=>`<button onclick="enter('${k}')"><b>${v.n}</b><span>${v.d}</span></button>`).join('')}</div></div>`}
+function enter(r){S.role=r;S.view='dash';draw()}
+function menu(f){const a=document.querySelector('.app'),b=$('bg');if(!a)return;const o=typeof f==='boolean'?f:!a.classList.contains('open');a.classList.toggle('open',o);if(b){b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')}}
+addEventListener('keydown',ev=>{if(ev.key==='Escape')menu(false)});
+addEventListener('resize',()=>{if(innerWidth>720)menu(false)});
+function tok(){if(S.role!=='test')return true;if(S.tokens<=0){alert('Sin tokens. Pasá al perfil Cliente para desbloquear todo.');return false}S.tokens--;return true}
+function draw(){const R=ROLES[S.role];
+$('root').innerHTML=`<div class="app"><header class="mbar"><button class="burger" id="bg" aria-label="Abrir menú" aria-expanded="false" aria-controls="sb" onclick="menu()"><span></span><span></span><span></span></button><div class="logo">FUNTION <i>ANALYTS</i></div></header><div class="scrim" onclick="menu(false)"></div><aside id="sb"><div class="logo" style="font-size:1.15rem;padding:.3rem .6rem">FUNTION <i>ANALYTS</i></div>${R.nav.map(k=>`<button class="nv ${S.view===k?'on':''}" onclick="S.view='${k}';draw();scrollTo(0,0)">${NAV[k]}</button>`).join('')}<button class="nv" onclick="logout()">Cerrar sesión</button></aside><main><div class="top"><h1>${NAV[S.view]}</h1><span><span class="pill">${R.n}</span> ${S.role==='test'?`<span class="pill">${S.tokens} tokens</span> <button class="btn g" onclick="upgrade()">Pasar a Cliente</button>`:''}</span></div><div id="v"></div></main></div>`;
+V[S.view]()}
+const V={
+dash(){const r=S.reqs.map(analyze),avg=Math.round(r.reduce((a,b)=>a+b.score,0)/r.length),all=Object.values(S.qa).flat().length,dn=Object.keys(S.qd).filter(k=>S.qd[k]).length,pc=Math.round(100*dn/all);
+$('v').innerHTML=`<div class="grid"><div class="card"><div class="mu">Calidad de requerimientos</div><div class="big ${col(avg)}">${avg}</div><div class="bar"><div style="width:${avg}%"></div></div></div><div class="card"><div class="mu">Avance de pruebas y release</div><div class="big">${pc}%</div><div class="bar"><div style="width:${pc}%"></div></div></div><div class="card"><div class="mu">Comentarios abiertos</div><div class="big">${S.reqs.reduce((a,x)=>a+x.com.length,0)}</div></div></div>
+<div class="card"><h3>Qué falta y qué mejorar</h3>${S.reqs.map((q,i)=>`<p><b>${e(q.t)}</b> <span class="pill">${r[i].score}/100</span></p><ul>${r[i].tips.map(t=>`<li>${e(t)}</li>`).join('')||'<li>Sin observaciones</li>'}</ul>`).join('')}<p class="mu">Esta visibilidad la ven analistas, desarrollo, líder y Product Owner.</p></div>`},
+req(){const q=S.reqs[S.cur],ed=ROLES[S.role].edit,d=ed?'':'readonly';
+const f=(k,l,h)=>`<label>${l}</label><textarea ${d} oninput="S.reqs[S.cur].${k}=this.value" placeholder="${h||''}">${e(q[k])}</textarea>`;
+$('v').innerHTML=`<div class="row" style="margin-bottom:.8rem"><select aria-label="Requerimiento" onchange="S.cur=+this.value;V.req()">${S.reqs.map((x,i)=>`<option value="${i}" ${i==S.cur?'selected':''}>${e(x.t)}</option>`).join('')}</select>${ed?'<button class="btn g" onclick="newReq()">Nuevo desde cero</button>':''}</div>
+<div class="card"><label>Título</label><input ${d} value="${e(q.t)}" oninput="S.reqs[S.cur].t=this.value">${f('obj','Objetivo','¿Qué necesita el cliente y por qué?')}${f('alc','Alcance (incluí "Fuera de alcance")')}${f('cu','Casos de uso (uno por línea)')}${f('ca','Criterios de aceptación (Dado / Cuando / Entonces)')}${f('par','Parámetros a tener en cuenta')}
+<div class="row"><button class="btn" onclick="run()">Analizar y puntuar</button><label style="align-self:center">Asignar a<select onchange="S.reqs[S.cur].asig=this.value">${['Sin asignar','Product Owner','Equipo de desarrollo','PO + Desarrollo'].map(o=>`<option ${q.asig===o?'selected':''}>${o}</option>`).join('')}</select></label></div></div><div id="an"></div>
+<div class="card"><h3>Comentarios</h3>${q.com.map(c=>`<p><b>${e(c.w)}:</b> ${e(c.x)}</p>`).join('')||'<p class="mu">Sin comentarios todavía.</p>'}<input id="cm" placeholder="Duda, mejora o avance sobre este requerimiento"><button class="btn" onclick="addC()">Comentar</button></div>`},
+bd(){const ed=ROLES[S.role].edit;$('v').innerHTML=`${S.tables.map((t,i)=>`<div class="card"><h3>${e(t.n)}</h3><div class="sc"><table><tr><th>Columna</th><th>Tipo</th><th>Nulo</th><th>Nota</th></tr>${t.c.map(c=>`<tr>${c.map(x=>`<td>${e(x)}</td>`).join('')}</tr>`).join('')}</table></div>${ed?`<div class="row" style="margin-top:.6rem"><input id="cn${i}" placeholder="nueva columna"><input id="ct${i}" placeholder="tipo, ej. VARCHAR(50)"><button class="btn g" onclick="addCol(${i})">Agregar columna</button></div>`:''}</div>`).join('')}
+${ed?'<div class="card"><h3>Nueva tabla</h3><div class="row"><input id="tn" placeholder="nombre de tabla"><button class="btn" onclick="addTab()">Crear tabla</button></div></div>':''}
+<div class="card"><h3>Script para desarrollo</h3><pre>${e(ddl())}</pre></div>`},
+flow(){$('v').innerHTML=`<div class="card"><label>Pasos del proceso (uno por línea; los que terminan en ? son decisiones)</label><textarea id="fl" style="min-height:130px">Usuario solicita recuperación\n¿Email registrado?\nEnviar enlace temporal\nUsuario define nueva clave\nFin</textarea><button class="btn" onclick="flow()">Generar flujograma</button></div><div class="card sc" id="fo"><p class="mu">Generá el flujograma para verlo acá.</p></div>`;flow(1)},
+qa(){$('v').innerHTML=Object.entries(S.qa).map(([s,it])=>{const n=it.filter(x=>S.qd[s+x]).length;return`<div class="card"><h3>${s} <span class="pill">${n}/${it.length}</span></h3><div class="bar"><div style="width:${100*n/it.length}%"></div></div>${it.map(x=>`<label class="chk"><input type="checkbox" ${S.qd[s+x]?'checked':''} onchange="S.qd['${s}${x}']=this.checked;V.qa()"><span style="font-weight:400">${x}</span></label>`).join('')}${n<it.length?`<p class="wa mu">Falta: ${it.filter(x=>!S.qd[s+x]).map(e).join('; ')}</p>`:'<p class="ok">Etapa completa</p>'}</div>`}).join('')},
+int(){if(API)return intApi();$('v').innerHTML=`<div class="grid">${INT.map(([n,d])=>`<div class="card"><h3>${n}</h3><p class="mu">${d}</p><button class="btn ${S.ints[n]?'':'g'}" onclick="S.ints[n]=!S.ints[n];V.int()">${S.ints[n]?'Conectado (demo)':'Conectar'}</button></div>`).join('')}</div><p class="mu">Demo visual: la conexión real usa OAuth 2.0 desde el servidor.</p>`},
+team(){const ad=S.role==='admin';$('v').innerHTML=`<div class="card"><h3>${ad?'Usuarios y perfiles':'Soporte'}</h3>${ad?'<p>Administrador: alta, baja y cambio de perfil (Soporte, Desarrollador, Test, Cliente).</p>':''}<p>Soporte resuelve bugs y fixes, y ayuda a los analistas dentro de la plataforma. Los tickets se asignan al equipo y quedan visibles para el líder.</p><div class="row"><input placeholder="Describí el problema o duda"><button class="btn">Crear ticket</button></div></div><div id="ul"></div>`;if(API&&ad)users()}};
+async function run(){if(API&&S.role==='test'){try{S.tokens=(await api('POST','/api/tokens/consume')).tokens}catch(x){return alert('Sin tokens. Pedile al administrador el pase a Cliente.')}}else if(!tok())return draw();const a=analyze(S.reqs[S.cur]);if(S.role==='test'){const t=document.querySelector('.pill+.pill');if(t)t.textContent=S.tokens+' tokens'}
+$('an').innerHTML=`<div class="card"><h3>Puntaje: <span class="${col(a.score)}">${a.score}/100</span></h3>${Object.entries(a.sec).map(([k,v])=>`<div class="mu">${k} · ${v}</div><div class="bar" style="margin-bottom:.5rem"><div style="width:${v}%"></div></div>`).join('')}<h3 style="margin-top:.8rem">Sugerencias</h3><ul>${a.tips.map(t=>`<li>${e(t)}</li>`).join('')||'<li>Excelente: listo para revisión del PO.</li>'}</ul></div>`}
+function newReq(){S.reqs.push({t:'Nuevo requerimiento',obj:'',alc:'',cu:'',ca:'',par:'',asig:'Sin asignar',com:[],ok:0});S.cur=S.reqs.length-1;V.req()}
+async function addC(){const v=$('cm').value.trim();if(!v)return;if(API){try{await save();await api('POST','/api/comments',{i:S.cur,text:v});await loadWs()}catch(x){alert(x.message)}return V.req()}S.reqs[S.cur].com.push({w:ROLES[S.role].n,x:v});V.req()}
+function addCol(i){const n=$('cn'+i).value.trim(),t=$('ct'+i).value.trim();if(!n||!/^[\w]+$/.test(n))return alert('Usá un nombre sin espacios.');S.tables[i].c.push([n,t||'VARCHAR(50)','Sí','Nueva']);S.tables[i].nuevas=(S.tables[i].nuevas||[]).concat([[n,t||'VARCHAR(50)']]);V.bd()}
+function addTab(){const n=$('tn').value.trim();if(!/^[\w]+$/.test(n))return alert('Usá un nombre sin espacios.');S.tables.push({n,c:[['id','INT','No','PK']],nueva:1});V.bd()}
+function ddl(){return S.tables.map(t=>(t.nueva?`CREATE TABLE ${t.n} (\n  id INT PRIMARY KEY\n);\n`:'')+(t.nuevas||[]).map(c=>`ALTER TABLE ${t.n} ADD ${c[0]} ${c[1]} NULL;`).join('\n')).filter(x=>x.trim()).join('\n')||'-- Sin cambios pendientes'}
+function flow(){const L=lines($('fl').value),h=64;let s=`<svg width="340" height="${L.length*h+10}" role="img" aria-label="Flujograma">`;
+L.forEach((x,i)=>{const y=i*h+8,d=x.endsWith('?'),t=e(x.length>34?x.slice(0,33)+'…':x);
+s+=i?`<line x1="170" y1="${y-14}" x2="170" y2="${y}" stroke="var(--mu)"/>`:'';
+s+=d?`<polygon points="170,${y} 320,${y+22} 170,${y+44} 20,${y+22}" fill="var(--ac2)" stroke="var(--ac)"/>`:`<rect x="20" y="${y}" width="300" height="44" rx="${i==0||i==L.length-1?22:6}" fill="var(--sf)" stroke="var(--ac)"/>`;
+s+=`<text x="170" y="${y+26}" text-anchor="middle" font-size="13" fill="var(--tx)">${t}</text>`});
+$('fo').innerHTML=s+'</svg>'}
+/* ---------- Conexión con el servidor. Sin servidor (ej. GitHub Pages) funciona en modo demo con localStorage ---------- */
+const KEY='funtion_analyts_v1';let API=false,ver=0,last='',saving=false;
+const api=(m,u,b)=>fetch(u,{method:m,credentials:'same-origin',headers:{'Content-Type':'application/json','X-Requested-With':'fetch'},body:b?JSON.stringify(b):undefined}).then(async r=>{const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||'Error'),{status:r.status});return j});
+const snap=()=>JSON.stringify({reqs:S.reqs,tables:S.tables,qd:S.qd});
+const typing=()=>/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+function applyWs(d){if(d.reqs)S.reqs=d.reqs;if(d.tables)S.tables=d.tables;if(d.qd)S.qd=d.qd;if(S.cur>=S.reqs.length)S.cur=0}
+async function loadWs(render){const r=await api('GET','/api/workspace');ver=r.version;if(r.data&&r.data.reqs){applyWs(r.data);last=snap()}else last='';if(render&&S.role&&!typing())draw()}
+async function save(){
+ if(!API){try{localStorage.setItem(KEY,JSON.stringify({reqs:S.reqs,tables:S.tables,qd:S.qd,ints:S.ints,tokens:S.tokens,cur:S.cur}))}catch(_){}return}
+ if(!S.role||saving)return;const s=snap();if(s===last)return;saving=true;
+ try{const r=await api('PUT','/api/workspace',{data:JSON.parse(s),version:ver});ver=r.version;last=s}
+ catch(x){if(x.status===409){await loadWs(true);alert('Otra persona modificó el contenido; se cargó la última versión.')}}
+ finally{saving=false}}
+setInterval(save,1500);addEventListener('pagehide',save);
+setInterval(async()=>{if(!API||!S.role||saving)return;try{const r=await api('GET','/api/workspace');if(r.version>ver&&snap()===last){ver=r.version;applyWs(r.data);last=snap();if(!typing())draw()}}catch(_){}},8000);
+async function boot(){try{const u=await api('GET','/api/auth/me');API=true;return start(u)}catch(x){
+ if(x.status===401){API=true;return loginForm()}
+ API=false;try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d)Object.assign(S,d)}catch(_){}login()}}
+async function start(u){S.role=u.role;S.email=u.email;S.tokens=u.tokens;await loadWs();S.view='dash';draw()}
+function loginForm(m){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p>Ingresá con tu cuenta o creá una de prueba (5 tokens).</p><label for="em">Correo</label><input id="em" type="email" autocomplete="username"><label for="pw">Contraseña (mínimo 10 caracteres)</label><input id="pw" type="password" autocomplete="current-password"><p class="er" id="er" role="alert">${e(m||'')}</p><div class="row"><button class="btn" onclick="auth('login')">Ingresar</button><button class="btn g" onclick="auth('register')">Crear cuenta de prueba</button></div></div>`}
+async function auth(k){try{await start(await api('POST','/api/auth/'+k,{email:$('em').value.trim(),password:$('pw').value}))}catch(x){$('er').textContent=x.message}}
+async function logout(){if(API){try{await api('POST','/api/auth/logout')}catch(_){}S.role=null;last='';return loginForm()}S.role=null;login()}
+function upgrade(){if(API)alert('Pedile al administrador que te pase al perfil Cliente.');else{S.role='cliente';draw()}}
+async function users(){try{const r=await api('GET','/api/admin/users');$('ul').innerHTML=`<div class="card"><h3>Usuarios registrados</h3><div class="sc"><table><tr><th>Correo</th><th>Perfil</th></tr>${r.map(u=>`<tr><td>${e(u.email)}</td><td>${u.email===S.email?e(u.role):`<select aria-label="Perfil de ${e(u.email)}" onchange="setRole(${u.id},this.value)">${Object.keys(ROLES).map(k=>`<option value="${k}" ${k===u.role?'selected':''}>${ROLES[k].n}</option>`).join('')}</select>`}</td></tr>`).join('')}</table></div></div>`}catch(x){}}
+async function setRole(id,role){try{await api('PUT','/api/admin/users/'+id,{role})}catch(x){alert(x.message)}users()}
+function intApi(){const f=(p,t,fs,extra)=>`<div class="card" id="i-${p}"><h3>${t}</h3>${fs.map(([n,l,ty])=>`<label>${l}</label><input name="${n}" type="${ty||'text'}" autocomplete="off">`).join('')}<div class="row"><button class="btn g" onclick="icon('${p}')">Guardar conexión</button></div>${extra}<p class="mu" id="m-${p}" role="status"></p></div>`;
+$('v').innerHTML=`<p class="mu">Las credenciales se guardan cifradas en el servidor. Solo Administrador y Cliente las usan.</p>`+
+f('jira','Jira y Confluence (Atlassian Cloud)',[['site','Sitio (empresa.atlassian.net)'],['email','Correo de Atlassian'],['token','API token','password']],`<label>Importar con JQL</label><input id="q-jira" value="project = ABC ORDER BY created DESC"><button class="btn" onclick="iimp('jira')">Importar como requerimientos</button><label style="margin-top:.7rem">Publicar el requerimiento actual en Confluence (clave del espacio)</label><input id="sp" placeholder="ej. DOC"><button class="btn" onclick="ipub()">Publicar en Confluence</button>`)+
+f('azure','Azure DevOps',[['org','Organización'],['project','Proyecto'],['token','Personal Access Token','password']],`<input id="q-azure" type="hidden"><button class="btn" onclick="iimp('azure')">Importar historias como requerimientos</button>`)}
+const msg=(p,t)=>{const m=$('m-'+p);if(m)m.textContent=t};
+async function icon(p){const b={};document.querySelectorAll('#i-'+p+' input[name]').forEach(i=>b[i.name]=i.value.trim());try{await api('POST','/api/integrations/'+p,b);msg(p,'Conexión guardada')}catch(x){msg(p,x.message)}}
+async function iimp(p){try{const r=await api('POST','/api/integrations/'+p+'/import',{q:$('q-'+p).value});r.items.forEach(i=>S.reqs.push({t:i.t,obj:i.obj,alc:'',cu:'',ca:'',par:'',asig:'Sin asignar',com:[],ok:0}));msg(p,r.items.length+' requerimientos importados')}catch(x){msg(p,x.message)}}
+async function ipub(){try{const r=await api('POST','/api/integrations/confluence/publish',{space:$('sp').value.trim(),req:S.reqs[S.cur]});msg('jira','Publicado: '+r.url)}catch(x){msg('jira',x.message)}}
+boot();
+</script></body></html>

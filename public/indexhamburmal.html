@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>FUNTION ANALYTS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f2;--sf:#fff;--tx:#1b2521;--mu:#66736d;--ln:#d5dcd7;--ac:#0d6b5c;--ac2:#e0f0ec;--wa:#b4570b;--er:#b3261e;--ok:#18794e}
+    @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}}
+    :root[data-theme="dark"]{--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}
+    html{scroll-padding-top:env(safe-area-inset-top,0px)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 'Source Sans 3',system-ui,sans-serif}
+    h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 .5rem;line-height:1.15}
+    button,input,select,textarea{font:inherit;color:inherit}
+    .btn{background:var(--ac);color:var(--bg);border:0;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
+    .btn.g{background:transparent;color:var(--ac);border:1px solid var(--ln)}
+    .btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nv:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+    input,select,textarea{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:6px;padding:.5rem;margin:.2rem 0 .7rem}
+    textarea{min-height:84px;resize:vertical}label{font-weight:600;font-size:.9rem}
+    .login{max-width:520px;margin:6vh auto;padding:1.2rem}
+    .logo{font:700 2rem 'Bricolage Grotesque';letter-spacing:-.02em}.logo i{color:var(--ac);font-style:normal}
+    .roles{display:grid;gap:.5rem;margin:1rem 0}.roles button{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:.7rem;cursor:pointer}
+    .roles button:hover{border-color:var(--ac)}.roles b{display:block}.roles span{color:var(--mu);font-size:.88rem}
+    
+    /* Maquetación del Panel de Control Computadoras */
+    .app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+    aside{background:var(--sf);border-right:1px solid var(--ln);padding:1rem .7rem;display:flex;flex-direction:column;gap:.15rem}
+    .nv{background:none;border:0;text-align:left;padding:.5rem .6rem;border-radius:6px;cursor:pointer;width:100%}.nv.on{background:var(--ac2);color:var(--ac);font-weight:600}
+    main{padding:1.2rem;min-width:0;max-width:980px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+    .pill{background:var(--ac2);color:var(--ac);border-radius:99px;padding:.15rem .6rem;font-size:.82rem;font-weight:600}
+    .card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:1rem;margin-bottom:.9rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+    .bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden}.bar div{height:100%;background:var(--ac)}
+    .big{font:700 2.4rem 'Bricolage Grotesque'}.mu{color:var(--mu);font-size:.9rem}
+    .ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
+    .sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid var(--ln);padding:.35rem .5rem;text-align:left}
+    pre{background:var(--bg);border:1px solid var(--ln);padding:.7rem;border-radius:6px;overflow-x:auto;font-size:.85rem}
+    .chk{display:flex;gap:.5rem;align-items:flex-start;margin:.25rem 0}.chk input{width:auto;margin:.3rem 0 0}
+    .row{display:flex;gap:.5rem;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
+
+    /* Estilos del Botón Hamburguesa */
+    .hamburguesa-btn{display:none;background:none;border:0;color:var(--ac);font-size:28px;cursor:pointer;padding:5px}
+    .aside-header{display:flex;justify-content:space-between;align-items:center;width:100%}
+    .nav-container{display:flex;flex-direction:column;gap:.15rem;width:100%}
+
+    /* 📱 Reestructuración Dinámica Exclusiva para Celulares */
+    @media(max-width:720px){
+      .app{grid-template-columns:1fr}
+      aside{flex-direction:column;border-right:0;border-bottom:1px solid var(--ln);padding:.5rem 1rem;position:relative;z-index:999}
+      .hamburguesa-btn{display:block}
+      .nav-container{display:none;position:absolute;top:100%;left:0;width:100%;background:var(--sf);padding:.5rem;box-shadow:0 4px 10px rgba(0,0,0,0.15);border-bottom:1px solid var(--ln)}
+      .nav-container.open{display:flex}
+      .nv{width:100%;padding:.7rem .6rem}
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+<script>
+const ROLES={
+admin:{n:'Administrador',d:'Acceso total, usuarios y configuración',nav:['dash','req','bd','flow','qa','int','team'],edit:1},
+soporte:{n:'Soporte',d:'Resuelve bugs/fixes y asiste a analistas',nav:['dash','req','qa','team'],edit:0},
+dev:{n:'Desarrollador',d:'Ve cambios, deja avances y comenta dudas',nav:['dash','req','bd','qa'],edit:0},
+test:{n:'Test (prueba gratuita)',d:'Funciones limitadas por tokens',nav:['dash','req','bd','flow','qa'],edit:1},
+cliente:{n:'Cliente (pago)',d:'Todo desbloqueado, asigna a PO y equipo',nav:['dash','req','bd','flow','qa','int','team'],edit:1}};
+const NAV={dash:'Panel',req:'Requerimientos',bd:'Modelo de datos',flow:'Flujogramas',qa:'Pruebas y release',int:'Integraciones',team:'Equipo y soporte'};
+const S={role:null,view:'dash',cur:0,tokens:5,
+reqs:[{t:'Recuperar contraseña',obj:'Permitir al usuario recuperar su acceso.',alc:'Envío de mail con enlace temporal.',cu:'CU1 Solicitar recuperación\nCU2 Restablecer contraseña',ca:'Dado un usuario registrado, cuando solicita recuperación, entonces recibe un mail\nEl proceso debe ser rápido y fácil',par:'',asig:'Sin asignar',com:[{w:'Desarrollador',x:'¿Cuánto dura el enlace temporal?'}],ok:0}],
+tables:[{n:'usuarios',c:[['id','INT','No','PK'],['email','VARCHAR(120)','No','Único'],['activo','BIT','No','']]}],
+qa:{'Pruebas técnicas':['Casos de prueba derivados de criterios','Cobertura de casos de uso ≥ 90%','Pruebas de datos límite','Evidencia adjunta'],'Pruebas UAT':['Usuarios clave definidos','Guion UAT aprobado','Defectos críticos cerrados','Firma del Product Owner'],'Prueba piloto':['Grupo piloto definido','Métricas de éxito acordadas','Plan de marcha atrás','Feedback consolidado'],'Deploy':['Ventana de despliegue comunicada','Checklist de release','Backup previo','Aprobación del líder'],'Verificación QA':['Smoke test en producción','Regresión sobre módulos afectados','Monitoreo 24 h','Cierre y lecciones aprendidas']},
+qd:{},ints:{}};
+const INT=[['Jira','Sincronizar historias y épicas del backlog'],['Confluence','Publicar la documentación funcional'],['Azure DevOps','Work items, boards y pipelines'],['IA (Claude, OpenAI)','Sugerencias y redacción asistida'],['Azure AD / SSO','Login corporativo'],['Notion / Trello','Backlog y documentación']];
+const e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+function lines(s){return s.split('\n').map(x=>x.trim()).filter(Boolean)}
+function analyze(r){
+ const amb=(`${r.obj} ${r.alc} ${r.ca}`.match(/\b(rápido|fácil|adecuado|flexible|amigable|etc|óptimo|cuando sea posible)\b/gi)||[]);
+ const cu=lines(r.cu),ca=lines(r.ca),gwt=ca.filter(x=>/dado.*cuando.*entonces/i.test(x));
+ const sec={'Objetivo':r.obj.length>=40?100:r.obj?50:0,'Alcance':(r.alc?50:0)+(/fuera de alcance/i.test(r.alc)?50:0),'Casos de uso':Math.min(100,cu.length*34),'Criterios de aceptación':ca.length?Math.round(100*gwt.length/ca.length):0,'Parámetros':r.par.length>=20?100:r.par?50:0};
+ const tips=[];
+ if(sec.Objetivo<100)tips.push('Objetivo: explicá qué problema resuelve y para quién (mín. 40 caracteres).');
+ if(sec.Alcance<100)tips.push('Alcance: agregá una línea "Fuera de alcance" para evitar sobrealcance.');
+ if(sec['Casos de uso']<100)tips.push(`Casos de uso: hay ${cu.length}; sumá flujos alternativos y de error (mín. 3).`);
+ if(sec['Criterios de aceptación']<100)tips.push(`Criterios: ${ca.length-gwt.length} no siguen el formato Dado / Cuando / Entonces o no son verificables.`);
+ if(sec.Parámetros<100)tips.push('Parámetros: definí reglas, límites, tiempos de vida y valores configurables.');
+ if(amb.length)tips.push('Ambigüedad detectada: '+[...new Set(amb.map(x=>x.toLowerCase()))].join(', ')+'. Reemplazá por valores medibles.');
+ const avg=Object.values(sec).reduce((a,b)=>a+b,0)/5,score=Math.max(0,Math.round(avg-Math.min(30,amb.length*8)));
+ return{sec,tips,score}}
+const col=n=>n>=80?'ok':n>=50?'wa':'er';
+
+function login(){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p style="color:var(--mu)">Del pedido de negocio a la especificación técnica sin ambigüedades.</p><div id="err" class="er" style="margin-bottom:1rem;display:none;font-weight:600"></div><form id="f" onsubmit="event.preventDefault();"><label>Correo electrónico</label><input type="email" id="em" required placeholder="tu@correo.com"><label>Contraseña (mínimo 10 caracteres)</label><input type="password" id="pw" required placeholder="••••••••••••"><div style="display:flex;gap:.5rem;margin-top:.5rem"><button type="button" class="btn" style="flex:1" id="lbtn">Ingresar</button><button type="button" class="btn g" style="flex:1" id="rbtn">Cuenta de prueba</button></div></form></div>`;
+ document.getElementById('lbtn').onclick=()=>auth('login');
+ document.getElementById('rbtn').onclick=()=>auth('register');
+}
+
+async function auth(t){
+ const email=$('em').value,password=$('pw').value;$('err').style.display='none';
+ if(!email||!password||password.length<10){$('err').innerText="Completá los campos. Contraseña mínimo 10 caracteres.";$('err').style.display='block';return}
+ try{
+  const r=await fetch('/api/auth/'+t,{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'fetch'},body:JSON.stringify({email,password})});
+  const d=await r.json();if(!r.ok)throw new Error(d.error||"Error");
+  S.role=d.role;S.tokens=d.tokens;render();
+ }catch(x){$('err').innerText=x.message;$('err').style.display='block'}
+}
+
+async function logout(){
+  await fetch('/api/auth/logout',{method:'POST',headers:{'X-Requested-With':'fetch'}});
+  window.location.reload();
+}
+
+function render(){
+ if(!S.role)return login();
+ const menu=ROLES[S.role];
+ let navHtml='';
+ menu.nav.forEach(k=>navHtml+=`<button class="nv ${S.view===k?'on':''}" onclick="S.view='${k}';render()">${NAV[k]}</button>`);
+ navHtml+=`<button class="nv" id="lobtn" style="color:var(--er)">Cerrar Sesión</button>`;
+
+ let mainHtml=`<div class="top"><div><h2 style="margin:0">${NAV[S.view]}</h2><span class="mu">Espacio compartido / Control de versiones optimista</span></div><div style="display:flex;gap:.5rem;align-items:center"><span class="pill">${menu.n}</span><span class="pill" style="background:var(--ln);color:var(--tx)">Tokens: ${S.tokens}</span></div></div>`;
+
+ if(S.view==='dash'){
+  let ok=0,wa=0,er=0;S.reqs.forEach(x=>{const s=analyze(x).score;if(s>=80)ok++;else if(s>=50)wa++;else er++});
+  mainHtml+=`<div class="grid"><div class="card"><span class="mu">Calidad Global</span><div class="big">${S.reqs.length?Math.round(S.reqs.reduce((a,b)=>a+analyze(b).score,0)/S.reqs.length):0}%</div><div class="bar" style="margin-top:.4rem"><div style="width:${S.reqs.length?Math.round(S.reqs.reduce((a,b)=>a+analyze(b).score,0)/S.reqs.length):0}%"></div></div></div><div class="card"><span class="mu">Estado de Requerimientos</span><div style="margin-top:.5rem;font-weight:600"><span class="ok">● ${ok} Óptimos</span> · <span class="wa">● ${wa} Alertas</span> · <span class="er">● ${er} Críticos</span></div></div></div>`;
+ }
+ if(S.view==='req'){
+  mainHtml+=`<div class="row" style="margin-bottom:1rem"><select id="selR" style="margin:0;flex:2" onchange="S.cur=Number(this.value);render()">`;
+  S.reqs.forEach((x,i)=>mainHtml+=`<option value="${i}" ${S.cur===i?'selected':''}>${e(x.t)}</option>`);
+  mainHtml+=`</select><button class="btn g" onclick="S.reqs.push({t:'Nuevo requerimiento',obj:'',alc:'',cu:'',ca:'',par:'',asig:'Sin asignar',com:[],ok:0});S.cur=S.reqs.length-1;render()">Nuevo desde cero</button></div>`;
+  const r=S.reqs[S.cur];if(r){
+   const az=analyze(r);
+   mainHtml+=`<div class="card"><label>Título del Requerimiento</label><input type="text" id="rt" value="${e(r.t)}" ${!menu.edit?'disabled':''}><div class="grid" style="margin-top:1rem"><div><label>Objetivo de Negocio</label><textarea id="rob" ${!menu.edit?'disabled':''}>${e(r.obj)}</textarea></div><div><label>Alcance Funcional</label><textarea id="ral" ${!menu.edit?'disabled':''}>${e(r.alc)}</textarea></div></div><div class="grid"><div><label>Casos de Uso (uno por línea)</label><textarea id="rcu" placeholder="CU1 Nombre" ${!menu.edit?'disabled':''}>${e(r.cu)}</textarea></div><div><label>Criterios de Aceptación (Dado/Cuando/Entonces)</label><textarea id="rca" placeholder="Dado... Cuando... Entonces..." ${!menu.edit?'disabled':''}>${e(r.ca)}</textarea></div></div><label>Parámetros y Reglas de Negocio</label><textarea id="rpa" ${!menu.edit?'disabled':''}>${e(r.par)}</textarea>${menu.edit?`<button class="btn" onclick="saveReq()">Guardar Cambios</button>`:''}</div><div class="card"><h3>Métricas de Calidad Automatizadas</h3><div style="display:flex;gap:1.5rem;align-items:center;margin:.8rem 0"><div class="big ${col(az.score)}">${az.score}%</div><div style="flex:1"><b>Estructura de la especificación:</b><div class="grid" style="font-size:.85rem;margin-top:.3rem">${Object.entries(az.sec).map(([k,v])=>`<div>${k}: <span class="${col(v)}">${v}%</span></div>`).join('')}</div></div></div>${az.tips.length?`<h4>Sugerencias para mejorar el requerimiento:</h4><ul>${az.tips.map(x=>`<li>${e(x)}</li>`).join('')}</ul>`:''}</div>`;
+  }
+ }
+ if(S.view==='bd'){
+  mainHtml+=`<div class="card"><h3>Modelo Relacional</h3><div class="sc"><table><thead><tr><th>Tabla</th><th>Columna</th><th>Tipo</th><th>Null</th><th>Key</th></tr></thead><tbody>`;
+  S.tables.forEach(t=>t.c.forEach((c,i)=>mainHtml+=`<tr><td>${i===0?`<b>${e(t.n)}</b>`:''}</td><td>${e(c)}</td><td>${e(c)}</td><td>${e(c)}</td><td>${e(c)}</td></tr>`));
+  mainHtml+=`</tbody></table></div></div>`;
+ }
+ if(S.view==='flow' || S.view==='qa' || S.view==='int' || S.view==='team'){
+  mainHtml+=`<div class="card"><h3>Módulos de Arquitectura Extendida</h3><p style="color:var(--mu)">Los flujogramas, integraciones Jira/Confluence y matrices QA se vinculan directamente mediante los endpoints securizados de Node.js en producción.</p></div>`;
+ }
+
+ $('root').innerHTML=`<div class="app"><aside><div class="aside-header"><div class="logo">FUNTION <i>ANALYTS</i></div><button id="mT" class="hamburguesa-btn">☰</button></div><div class="nav-container" id="nC">${navHtml}</div></aside><main>${mainHtml}</main></div>`;
+ 
+ const mT=document.getElementById('mT'),nC=document.getElementById('nC');
+ if(mT&&nC){
+  mT.onclick=(x)=>{x.stopPropagation();nC.classList.toggle('open')};
+  nC.onclick=()=>{nC.classList.remove('open')};
+ }
+ 
+ const lo=document.getElementById('lobtn');if(lo){lo.onclick=async(x)=>{x.preventDefault();x.stopPropagation();await logout()}}
+}
+
+function saveReq(){
+ const r=S.reqs[S.cur];if(!r)return;
+ r.t=$('rt').value;r.obj=$('rob').value;r.alc=$('ral').value;r.cu=$('rcu').value;r.ca=$('rca').value;r.par=$('rpa').value;
+ render();
+}
+
+async function check(){
+ try{
+  const r=await fetch('/api/auth/me',{headers:{'X-Requested-With':'fetch'}});
+  if(r.ok){const d=await r.json();S.role=d.role;S.tokens=d.tokens}
+ }catch(_){}render();
+}
+check();
+</script>
+</body>
+</html>

@@ -1,63 +1,81 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>FUNTION ANALYTS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f2;--sf:#fff;--tx:#1b2521;--mu:#66736d;--ln:#d5dcd7;--ac:#0d6b5c;--ac2:#e0f0ec;--wa:#b4570b;--er:#b3261e;--ok:#18794e}
-    @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}}
-    :root[data-theme="dark"]{--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}
-    html{scroll-padding-top:env(safe-area-inset-top,0px)}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 'Source Sans 3',system-ui,sans-serif}
-    h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 .5rem;line-height:1.15}
-    button,input,select,textarea{font:inherit;color:inherit}
-    .btn{background:var(--ac);color:var(--bg);border:0;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
-    .btn.g{background:transparent;color:var(--ac);border:1px solid var(--ln)}
-    .btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nv:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
-    input,select,textarea{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:6px;padding:.5rem;margin:.2rem 0 .7rem}
-    textarea{min-height:84px;resize:vertical}label{font-weight:600;font-size:.9rem}
-    .login{max-width:520px;margin:6vh auto;padding:1.2rem}
-    .logo{font:700 2rem 'Bricolage Grotesque';letter-spacing:-.02em}.logo i{color:var(--ac);font-style:normal}
-    .roles{display:grid;gap:.5rem;margin:1rem 0}.roles button{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:.7rem;cursor:pointer}
-    .roles button:hover{border-color:var(--ac)}.roles b{display:block}.roles span{color:var(--mu);font-size:.88rem}
-    
-    /* Maquetación del Panel de Control Computadoras */
-    .app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
-    aside{background:var(--sf);border-right:1px solid var(--ln);padding:1rem .7rem;display:flex;flex-direction:column;gap:.15rem}
-    .nv{background:none;border:0;text-align:left;padding:.5rem .6rem;border-radius:6px;cursor:pointer;width:100%}.nv.on{background:var(--ac2);color:var(--ac);font-weight:600}
-    main{padding:1.2rem;min-width:0;max-width:980px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
-    .pill{background:var(--ac2);color:var(--ac);border-radius:99px;padding:.15rem .6rem;font-size:.82rem;font-weight:600}
-    .card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:1rem;margin-bottom:.9rem}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
-    .bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden}.bar div{height:100%;background:var(--ac)}
-    .big{font:700 2.4rem 'Bricolage Grotesque'}.mu{color:var(--mu);font-size:.9rem}
-    .ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
-    .sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid var(--ln);padding:.35rem .5rem;text-align:left}
-    pre{background:var(--bg);border:1px solid var(--ln);padding:.7rem;border-radius:6px;overflow-x:auto;font-size:.85rem}
-    .chk{display:flex;gap:.5rem;align-items:flex-start;margin:.25rem 0}.chk input{width:auto;margin:.3rem 0 0}
-    .row{display:flex;gap:.5rem;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
-
-    /* Estilos del Botón Hamburguesa */
-    .hamburguesa-btn{display:none;background:none;border:0;color:var(--ac);font-size:28px;cursor:pointer;padding:5px}
-    .aside-header{display:flex;justify-content:space-between;align-items:center;width:100%}
-    .nav-container{display:flex;flex-direction:column;gap:.15rem;width:100%}
-
-    /* 📱 Reestructuración Dinámica Exclusiva para Celulares */
-    @media(max-width:720px){
-      .app{grid-template-columns:1fr}
-      aside{flex-direction:column;border-right:0;border-bottom:1px solid var(--ln);padding:.5rem 1rem;position:relative;z-index:999}
-      .hamburguesa-btn{display:block}
-      .nav-container{display:none;position:absolute;top:100%;left:0;width:100%;background:var(--sf);padding:.5rem;box-shadow:0 4px 10px rgba(0,0,0,0.15);border-bottom:1px solid var(--ln)}
-      .nav-container.open{display:flex}
-      .nv{width:100%;padding:.7rem .6rem}
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
+<html lang="es"><head><meta charset="utf-8"><title>FUNTION ANALYTS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f2;--sf:#fff;--tx:#1b2521;--mu:#66736d;--ln:#d5dcd7;--ac:#0d6b5c;--ac2:#e0f0ec;--wa:#b4570b;--er:#b3261e;--ok:#18794e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}}
+:root[data-theme="dark"]{--bg:#121816;--sf:#1a2320;--tx:#e6ede9;--mu:#93a39b;--ln:#2c3833;--ac:#4cc3ac;--ac2:#1d3a34;--wa:#e8a15a;--er:#f2867f;--ok:#5fd398}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 'Source Sans 3',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0 0 .5rem;line-height:1.15}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{background:var(--ac);color:var(--bg);border:0;border-radius:6px;padding:.5rem .9rem;cursor:pointer;font-weight:600}
+.btn.g{background:transparent;color:var(--ac);border:1px solid var(--ln)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,.nv:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+input,select,textarea{width:100%;background:var(--sf);border:1px solid var(--ln);border-radius:6px;padding:.5rem;margin:.2rem 0 .7rem}
+textarea{min-height:84px;resize:vertical}label{font-weight:600;font-size:.9rem}
+.login{max-width:520px;margin:6vh auto;padding:1.2rem}
+.logo{font:700 2rem 'Bricolage Grotesque';letter-spacing:-.02em}.logo i{color:var(--ac);font-style:normal}
+.roles{display:grid;gap:.5rem;margin:1rem 0}.roles button{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:.7rem;cursor:pointer}
+.roles button:hover{border-color:var(--ac)}.roles b{display:block}.roles span{color:var(--mu);font-size:.88rem}
+.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+aside{background:var(--sf);border-right:1px solid var(--ln);padding:1rem .7rem;display:flex;flex-direction:column;gap:.15rem}
+.nv{background:none;border:0;text-align:left;padding:.5rem .6rem;border-radius:6px;cursor:pointer}.nv.on{background:var(--ac2);color:var(--ac);font-weight:600}
+main{padding:1.2rem;min-width:0;max-width:980px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.pill{background:var(--ac2);color:var(--ac);border-radius:99px;padding:.15rem .6rem;font-size:.82rem;font-weight:600}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:1rem;margin-bottom:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+.bar{height:8px;background:var(--ln);border-radius:9px;overflow:hidden}.bar div{height:100%;background:var(--ac)}
+.big{font:700 2.4rem 'Bricolage Grotesque'}.mu{color:var(--mu);font-size:.9rem}
+.ok{color:var(--ok)}.wa{color:var(--wa)}.er{color:var(--er)}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem}td,th{border-bottom:1px solid var(--ln);padding:.35rem .5rem;text-align:left}
+pre{background:var(--bg);border:1px solid var(--ln);padding:.7rem;border-radius:6px;overflow-x:auto;font-size:.85rem}
+.chk{display:flex;gap:.5rem;align-items:center;margin:.25rem 0}.chk input{width:auto;margin:.3rem 0 0}
+.cl{display:flex;gap:.5rem;align-items:flex-start;flex:1;font-weight:400;font-size:1rem;margin:0}
+.row{display:flex;gap:.5rem;flex-wrap:wrap}.row>*{flex:1;min-width:110px}
+.item{border:1px solid var(--ln);border-radius:8px;padding:.7rem;margin:.5rem 0}
+.ih{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.acts{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-top:.5rem}
+.acts label{display:flex;gap:.4rem;align-items:center;margin:0}
+.acts select{width:auto;margin:0}
+.sm{padding:.25rem .65rem;font-size:.85rem}
+.cm{border-bottom:1px solid var(--ln);padding:.55rem 0}.ctx{white-space:pre-wrap;overflow-wrap:anywhere}
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.5rem}
+.tp{text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:.6rem;cursor:pointer}
+.tp.on{border-color:var(--ac);background:var(--ac2)}.tp span{display:block;color:var(--mu);font-size:.82rem}
+.tp:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.nl{list-style:none;padding:0;margin:0}.nl li{margin:.25rem 0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);background:var(--tx);color:var(--bg);padding:.6rem 1rem;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.mbar,.scrim{display:none}
+aside{position:sticky;top:0;height:100vh;height:100dvh;overflow-y:auto}
+.burger{width:44px;height:44px;border:1px solid var(--ln);background:var(--sf);border-radius:8px;cursor:pointer;display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0;margin:0;flex:none}
+.burger span{display:block;width:20px;height:2px;background:var(--tx);border-radius:2px;transition:transform .2s,opacity .2s}
+.app.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.app.open .burger span:nth-child(2){opacity:0}
+.app.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.burger:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+@media(max-width:720px){
+.app{display:block}
+.mbar{display:flex;align-items:center;gap:.7rem;position:sticky;top:0;z-index:20;background:var(--sf);border-bottom:1px solid var(--ln);padding:.5rem 16px;padding-top:calc(.5rem + env(safe-area-inset-top,0px))}
+.mbar .logo{font-size:1.15rem}
+aside{position:fixed;top:0;left:0;bottom:0;width:min(82vw,290px);height:auto;z-index:40;transform:translateX(-105%);visibility:hidden;transition:transform .25s ease,visibility .25s;border-right:1px solid var(--ln);padding:1rem .7rem;padding-top:calc(1rem + env(safe-area-inset-top,0px))}
+.app.open aside{transform:none;visibility:visible;box-shadow:0 0 30px rgba(0,0,0,.35)}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30}
+.app.open .scrim{display:block}
+.nv{padding:.8rem .7rem;font-size:1.05rem;min-height:44px}
+main{padding:16px}
+.top h1{font-size:1.5rem}
+.big{font-size:2rem}
+.card{padding:.85rem}
+.btn{min-height:44px}
+.row>*{min-width:100%}
+.login{margin:3vh auto;padding:16px}
+}
+@media(prefers-reduced-motion:reduce){aside,.burger span,.toast{transition:none}}
+</style></head><body><div id="root"></div>
 <script>
 const ROLES={
 admin:{n:'Administrador',d:'Acceso total, usuarios y configuración',nav:['dash','req','bd','flow','qa','int','team'],edit:1},
@@ -65,20 +83,38 @@ soporte:{n:'Soporte',d:'Resuelve bugs/fixes y asiste a analistas',nav:['dash','r
 dev:{n:'Desarrollador',d:'Ve cambios, deja avances y comenta dudas',nav:['dash','req','bd','qa'],edit:0},
 test:{n:'Test (prueba gratuita)',d:'Funciones limitadas por tokens',nav:['dash','req','bd','flow','qa'],edit:1},
 cliente:{n:'Cliente (pago)',d:'Todo desbloqueado, asigna a PO y equipo',nav:['dash','req','bd','flow','qa','int','team'],edit:1}};
+const RS={admin:'Administrador',soporte:'Soporte',dev:'Desarrollador',test:'Test',cliente:'Cliente'};
 const NAV={dash:'Panel',req:'Requerimientos',bd:'Modelo de datos',flow:'Flujogramas',qa:'Pruebas y release',int:'Integraciones',team:'Equipo y soporte'};
-const S={role:null,view:'dash',cur:0,tokens:5,
-reqs:[{t:'Recuperar contraseña',obj:'Permitir al usuario recuperar su acceso.',alc:'Envío de mail con enlace temporal.',cu:'CU1 Solicitar recuperación\nCU2 Restablecer contraseña',ca:'Dado un usuario registrado, cuando solicita recuperación, entonces recibe un mail\nEl proceso debe ser rápido y fácil',par:'',asig:'Sin asignar',com:[{w:'Desarrollador',x:'¿Cuánto dura el enlace temporal?'}],ok:0}],
+const GROUPS=['Sin asignar','Product Owner','Equipo de desarrollo','PO + Desarrollo'];
+const ESTS=['Borrador','En revisión','Aprobado'],PRI=['Alta','Media','Baja'],MEST=['Pendiente','Planificada','Hecha'];
+const uid=()=>(self.crypto&&crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36));
+const DEMO_USERS=Object.keys(ROLES).map(k=>({id:'demo-'+k,email:k+'@demo',role:k}));
+const S={role:null,view:'dash',rv:'list',cid:null,tokens:5,uid:null,email:'',users:[],dsel:'all',qry:'',fil:'all',ecid:null,
+ftipo:'proceso',fsrc:{},fname:'',fid:null,frid:'',fsvg:'',sv:'',
+reqs:[{id:'r-demo-1',t:'Recuperar contraseña',obj:'Permitir al usuario recuperar su acceso.',alc:'Envío de mail con enlace temporal.',cu:'CU1 Solicitar recuperación\nCU2 Restablecer contraseña',ca:'Dado un usuario registrado, cuando solicita recuperación, entonces recibe un mail\nEl proceso debe ser rápido y fácil',par:'',asig:'Sin asignar',asigU:null,est:'Borrador',upd:0,com:[{id:'c-demo-1',uid:null,w:'Desarrollador',x:'¿Cuánto dura el enlace temporal?',at:null}],ok:0}],
 tables:[{n:'usuarios',c:[['id','INT','No','PK'],['email','VARCHAR(120)','No','Único'],['activo','BIT','No','']]}],
 qa:{'Pruebas técnicas':['Casos de prueba derivados de criterios','Cobertura de casos de uso ≥ 90%','Pruebas de datos límite','Evidencia adjunta'],'Pruebas UAT':['Usuarios clave definidos','Guion UAT aprobado','Defectos críticos cerrados','Firma del Product Owner'],'Prueba piloto':['Grupo piloto definido','Métricas de éxito acordadas','Plan de marcha atrás','Feedback consolidado'],'Deploy':['Ventana de despliegue comunicada','Checklist de release','Backup previo','Aprobación del líder'],'Verificación QA':['Smoke test en producción','Regresión sobre módulos afectados','Monitoreo 24 h','Cierre y lecciones aprendidas']},
-qd:{},ints:{}};
+qd:{},qx:{},mej:[],dg:[],ints:{}};
 const INT=[['Jira','Sincronizar historias y épicas del backlog'],['Confluence','Publicar la documentación funcional'],['Azure DevOps','Work items, boards y pipelines'],['IA (Claude, OpenAI)','Sugerencias y redacción asistida'],['Azure AD / SSO','Login corporativo'],['Notion / Trello','Backlog y documentación']];
 const e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $=id=>document.getElementById(id);
-function lines(s){return s.split('\n').map(x=>x.trim()).filter(Boolean)}
+const lines=s=>String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
+const fmt=t=>t?new Date(t).toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+const hm=()=>new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+const label=u=>`${String(u.email).split('@')[0]} (${RS[u.role]})`;
+const myLabel=()=>label({email:S.email,role:S.role});
+const col=n=>n>=80?'ok':n>=50?'wa':'er';
+const mkReq=(t,o='')=>({id:uid(),t,obj:o,alc:'',cu:'',ca:'',par:'',asig:'Sin asignar',asigU:null,est:'Borrador',upd:Date.now(),com:[],ok:0});
+const curReq=()=>S.reqs.find(r=>r.id===S.cid);
+function ids(){S.reqs.forEach(r=>{if(!r.id)r.id=uid();if(!r.est)r.est='Borrador';if(!Array.isArray(r.com))r.com=[];r.com.forEach(c=>{if(!c.id)c.id=uid()})});S.mej.forEach(m=>{if(!m.id)m.id=uid()});S.dg.forEach(d=>{if(!d.id)d.id=uid()})}
+function toast(t){let x=$('toast');if(!x){x=document.createElement('div');x.id='toast';x.className='toast';x.setAttribute('role','status');document.body.appendChild(x)}x.textContent=t;x.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>x.classList.remove('on'),2600)}
+function setSv(t){S.sv=t;const x=$('sv');if(x)x.textContent=t}
+const dirty=()=>setSv('Guardando…');
 function analyze(r){
- const amb=(`${r.obj} ${r.alc} ${r.ca}`.match(/\b(rápido|fácil|adecuado|flexible|amigable|etc|óptimo|cuando sea posible)\b/gi)||[]);
- const cu=lines(r.cu),ca=lines(r.ca),gwt=ca.filter(x=>/dado.*cuando.*entonces/i.test(x));
- const sec={'Objetivo':r.obj.length>=40?100:r.obj?50:0,'Alcance':(r.alc?50:0)+(/fuera de alcance/i.test(r.alc)?50:0),'Casos de uso':Math.min(100,cu.length*34),'Criterios de aceptación':ca.length?Math.round(100*gwt.length/ca.length):0,'Parámetros':r.par.length>=20?100:r.par?50:0};
+ const g=k=>String(r[k]??''),obj=g('obj'),alc=g('alc'),par=g('par');
+ const amb=(`${obj} ${alc} ${g('ca')}`.match(/\b(rápido|fácil|adecuado|flexible|amigable|etc|óptimo|cuando sea posible)\b/gi)||[]);
+ const cu=lines(g('cu')),ca=lines(g('ca')),gwt=ca.filter(x=>/dado.*cuando.*entonces/i.test(x));
+ const sec={'Objetivo':obj.length>=40?100:obj?50:0,'Alcance':(alc?50:0)+(/fuera de alcance/i.test(alc)?50:0),'Casos de uso':Math.min(100,cu.length*34),'Criterios de aceptación':ca.length?Math.round(100*gwt.length/ca.length):0,'Parámetros':par.length>=20?100:par?50:0};
  const tips=[];
  if(sec.Objetivo<100)tips.push('Objetivo: explicá qué problema resuelve y para quién (mín. 40 caracteres).');
  if(sec.Alcance<100)tips.push('Alcance: agregá una línea "Fuera de alcance" para evitar sobrealcance.');
@@ -88,83 +124,323 @@ function analyze(r){
  if(amb.length)tips.push('Ambigüedad detectada: '+[...new Set(amb.map(x=>x.toLowerCase()))].join(', ')+'. Reemplazá por valores medibles.');
  const avg=Object.values(sec).reduce((a,b)=>a+b,0)/5,score=Math.max(0,Math.round(avg-Math.min(30,amb.length*8)));
  return{sec,tips,score}}
-const col=n=>n>=80?'ok':n>=50?'wa':'er';
+function login(){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p>Del pedido del Product Owner al release, con el análisis funcional bajo control.</p>
+<label>Correo</label><input value="analista@empresa.com" aria-label="Correo"><label>Contraseña</label><input type="password" value="••••••••">
+<p class="mu">Demo: elegí un perfil para entrar. En producción el acceso se valida en servidor (ver documentación técnica).</p>
+<div class="roles">${Object.entries(ROLES).map(([k,v])=>`<button onclick="enter('${k}')"><b>${v.n}</b><span>${v.d}</span></button>`).join('')}</div></div>`}
+function enter(r){S.role=r;S.uid='demo-'+r;S.email=r+'@demo';S.users=DEMO_USERS;S.view='dash';S.rv='list';S.cid=null;draw()}
+function menu(f){const a=document.querySelector('.app'),b=$('bg');if(!a)return;const o=typeof f==='boolean'?f:!a.classList.contains('open');a.classList.toggle('open',o);if(b){b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Cerrar menú':'Abrir menú')}}
+addEventListener('keydown',ev=>{if(ev.key==='Escape')menu(false)});
+addEventListener('resize',()=>{if(innerWidth>720)menu(false)});
+function go(k){if(k==='req'){S.rv='list';S.ecid=null}S.view=k;draw();scrollTo(0,0)}
+function tok(){if(S.role!=='test')return true;if(S.tokens<=0){alert('Sin tokens. Pasá al perfil Cliente para desbloquear todo.');return false}S.tokens--;return true}
+function draw(){const R=ROLES[S.role];
+$('root').innerHTML=`<div class="app"><header class="mbar"><button class="burger" id="bg" aria-label="Abrir menú" aria-expanded="false" aria-controls="sb" onclick="menu()"><span></span><span></span><span></span></button><div class="logo">FUNTION <i>ANALYTS</i></div></header><div class="scrim" onclick="menu(false)"></div><aside id="sb"><div class="logo" style="font-size:1.15rem;padding:.3rem .6rem">FUNTION <i>ANALYTS</i></div>${R.nav.map(k=>`<button class="nv ${S.view===k?'on':''}" onclick="go('${k}')">${NAV[k]}</button>`).join('')}<button class="nv" onclick="logout()">Cerrar sesión</button></aside><main><div class="top"><h1>${NAV[S.view]}</h1><span><span class="mu" id="sv" role="status" aria-live="polite"></span> <span class="pill">${R.n}</span> ${S.role==='test'?`<span class="pill" id="tk">${S.tokens} tokens</span> <button class="btn g" onclick="upgrade()">Pasar a Cliente</button>`:''}</span></div><div id="v"></div></main></div>`;
+setSv(S.sv);V[S.view]()}
 
-function login(){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p style="color:var(--mu)">Del pedido de negocio a la especificación técnica sin ambigüedades.</p><div id="err" class="er" style="margin-bottom:1rem;display:none;font-weight:600"></div><form id="f" onsubmit="event.preventDefault();"><label>Correo electrónico</label><input type="email" id="em" required placeholder="tu@correo.com"><label>Contraseña (mínimo 10 caracteres)</label><input type="password" id="pw" required placeholder="••••••••••••"><div style="display:flex;gap:.5rem;margin-top:.5rem"><button type="button" class="btn" style="flex:1" id="lbtn">Ingresar</button><button type="button" class="btn g" style="flex:1" id="rbtn">Cuenta de prueba</button></div></form></div>`;
- document.getElementById('lbtn').onclick=()=>auth('login');
- document.getElementById('rbtn').onclick=()=>auth('register');
-}
+/* ---------- Panel: análisis elegible y mejoras a futuro ---------- */
+function qaItems(s){return[...S.qa[s].map(l=>({l,c:0})),...(S.qx[s]||[]).map(l=>({l,c:1}))]}
+function qaStats(){let t=0,d=0;Object.keys(S.qa).forEach(s=>qaItems(s).forEach(x=>{t++;if(S.qd[s+x.l])d++}));return{t,d}}
+const bars=a=>Object.entries(a.sec).map(([k,v])=>`<div class="mu">${k} · ${v}</div><div class="bar" style="margin-bottom:.5rem"><div style="width:${v}%"></div></div>`).join('');
+const tipsUl=a=>`<ul>${a.tips.map(t=>`<li>${e(t)}</li>`).join('')||'<li>Sin observaciones: listo para revisión del PO.</li>'}</ul>`;
+const V={
+dash(){
+ if(S.dsel!=='all'&&!S.reqs.some(r=>r.id===S.dsel))S.dsel='all';
+ const one=S.reqs.find(r=>r.id===S.dsel),list=one?[one]:S.reqs,res=list.map(analyze);
+ const avg=res.length?Math.round(res.reduce((a,b)=>a+b.score,0)/res.length):0;
+ const qs=qaStats(),pc=qs.t?Math.round(100*qs.d/qs.t):0,nc=list.reduce((a,x)=>a+(x.com||[]).length,0);
+ const mp=S.mej.filter(m=>m.est!=='Hecha'&&(!one||m.rid===one.id)).length;
+ const opts=`<option value="all">Todos los requerimientos (resumen)</option>`+S.reqs.map(r=>`<option value="${e(r.id)}" ${r.id===S.dsel?'selected':''}>${e(r.t)}</option>`).join('');
+ let an;
+ if(!S.reqs.length)an='<p class="mu">Todavía no hay requerimientos. Creá uno en la sección Requerimientos.</p>';
+ else if(one)an=`<h3>${e(one.t)} <span class="pill ${col(res[0].score)}">${res[0].score}/100</span></h3>${bars(res[0])}<h3 style="margin-top:.8rem">Qué falta y qué mejorar</h3>${tipsUl(res[0])}<div class="acts"><button class="btn g" data-a="open" data-id="${e(one.id)}">Abrir en el editor</button></div>`;
+ else an=`<h3>Qué falta y qué mejorar</h3>`+list.map((q,i)=>`<p><b>${e(q.t)}</b> <span class="pill ${col(res[i].score)}">${res[i].score}/100</span> <button class="btn g sm" data-a="open" data-id="${e(q.id)}">Abrir</button></p>${tipsUl(res[i])}`).join('');
+ const mj=S.mej.filter(m=>!one||m.rid===one.id).sort((a,b)=>(a.est==='Hecha')-(b.est==='Hecha')||PRI.indexOf(a.pri)-PRI.indexOf(b.pri));
+ const rt=id=>{const r=S.reqs.find(x=>x.id===id);return r?r.t:'General'};
+ const items=mj.map(m=>`<div class="item"><div class="ih"><b>${e(m.t)}</b></div><div class="mu"><span class="pill ${m.pri==='Alta'?'er':m.pri==='Media'?'wa':'ok'}">${e(m.pri)}</span> ${e(rt(m.rid))} · ${e(m.by||'')} ${fmt(m.at)}</div><div class="acts"><label>Estado <select data-c="mest" data-id="${e(m.id)}" aria-label="Estado de la mejora">${MEST.map(x=>`<option ${m.est===x?'selected':''}>${x}</option>`).join('')}</select></label><button class="btn g sm" data-a="mdel" data-id="${e(m.id)}">Eliminar</button></div></div>`).join('')||'<p class="mu">Todavía no hay mejoras cargadas.</p>';
+ $('v').innerHTML=`<div class="card"><label for="dsel">Requerimiento a analizar</label><select id="dsel" data-c="dsel">${opts}</select></div>
+<div class="grid"><div class="card"><div class="mu">Calidad ${one?'del requerimiento':'promedio'}</div><div class="big ${col(avg)}">${avg}</div><div class="bar"><div style="width:${avg}%"></div></div></div><div class="card"><div class="mu">Avance de pruebas y release</div><div class="big">${pc}%</div><div class="bar"><div style="width:${pc}%"></div></div></div><div class="card"><div class="mu">Comentarios</div><div class="big">${nc}</div></div><div class="card"><div class="mu">Mejoras pendientes</div><div class="big">${mp}</div></div></div>
+<div class="card">${an}<p class="mu">Esta visibilidad la ven analistas, desarrollo, líder y Product Owner.</p></div>
+<div class="card"><h3>Mejoras a futuro</h3><p class="mu">Ideas para después de la implementación: optimizaciones, funciones nuevas o deuda pendiente. ${one?'Se muestran las del requerimiento seleccionado.':''}</p>
+<label for="mt">Nueva mejora</label><textarea id="mt" maxlength="300" placeholder="Ej. Permitir recuperar la clave también por SMS"></textarea>
+<div class="row"><div><label for="mp">Prioridad</label><select id="mp">${PRI.map(x=>`<option ${x==='Media'?'selected':''}>${x}</option>`).join('')}</select></div><div><label for="mr">Requerimiento relacionado</label><select id="mr"><option value="">General (sin vincular)</option>${S.reqs.map(r=>`<option value="${e(r.id)}" ${one&&one.id===r.id?'selected':''}>${e(r.t)}</option>`).join('')}</select></div></div>
+<button class="btn" data-a="madd">Agregar mejora</button><div style="margin-top:.8rem">${items}</div></div>`},
 
-async function auth(t){
- const email=$('em').value,password=$('pw').value;$('err').style.display='none';
- if(!email||!password||password.length<10){$('err').innerText="Completá los campos. Contraseña mínimo 10 caracteres.";$('err').style.display='block';return}
- try{
-  const r=await fetch('/api/auth/'+t,{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'fetch'},body:JSON.stringify({email,password})});
-  const d=await r.json();if(!r.ok)throw new Error(d.error||"Error");
-  S.role=d.role;S.tokens=d.tokens;render();
- }catch(x){$('err').innerText=x.message;$('err').style.display='block'}
-}
+/* ---------- Requerimientos: listado guardado + editor ---------- */
+req(){if(S.rv==='edit'&&curReq())return reqEdit();S.rv='list';reqList()},
+bd(){const ed=ROLES[S.role].edit;$('v').innerHTML=`${S.tables.map((t,i)=>`<div class="card"><h3>${e(t.n)}</h3><div class="sc"><table><tr><th>Columna</th><th>Tipo</th><th>Nulo</th><th>Nota</th></tr>${t.c.map(c=>`<tr>${c.map(x=>`<td>${e(x)}</td>`).join('')}</tr>`).join('')}</table></div>${ed?`<div class="row" style="margin-top:.6rem"><input id="cn${i}" placeholder="nueva columna"><input id="ct${i}" placeholder="tipo, ej. VARCHAR(50)"><button class="btn g" onclick="addCol(${i})">Agregar columna</button></div>`:''}</div>`).join('')}
+${ed?'<div class="card"><h3>Nueva tabla</h3><div class="row"><input id="tn" placeholder="nombre de tabla"><button class="btn" onclick="addTab()">Crear tabla</button></div></div>':''}
+<div class="card"><h3>Script para desarrollo</h3><pre>${e(ddl())}</pre></div>`},
+flow(){const t=DG[S.ftipo],ed=ROLES[S.role].edit,src=S.fsrc[S.ftipo]??t.ej;
+ const rn=id=>{const r=S.reqs.find(x=>x.id===id);return r?r.t:'Sin vincular'};
+ const saved=S.dg.map(g=>`<div class="item"><div class="ih"><b>${e(g.t)}</b><span class="pill">${e((DG[g.tipo]||{n:g.tipo}).n)}</span></div><div class="mu">${e(rn(g.rid))} · ${e(g.by||'')} ${fmt(g.at)}</div><div class="acts"><button class="btn g sm" data-a="fopen" data-id="${e(g.id)}">Abrir</button>${ed?`<button class="btn g sm" data-a="fdel" data-id="${e(g.id)}">Eliminar</button>`:''}</div></div>`).join('')||'<p class="mu">Todavía no guardaste diagramas.</p>';
+ $('v').innerHTML=`<div class="card"><h3>Tipo de diagrama</h3><div class="types" role="group" aria-label="Tipo de diagrama">${Object.entries(DG).map(([k,x])=>`<button class="tp ${k===S.ftipo?'on':''}" aria-pressed="${k===S.ftipo}" data-a="ftipo" data-t="${k}"><b>${e(x.n)}</b><span>${e(x.s)}</span></button>`).join('')}</div></div>
+<div class="card"><h3>${e(t.n)}</h3><p><b>Cuándo usarlo:</b> ${e(t.cuando)}</p><p><b>Cómo escribirlo:</b> ${e(t.fmt)}</p><label for="fl">Contenido (el diagrama se dibuja mientras escribís)</label><textarea id="fl" data-i="fsrc" maxlength="6000" style="min-height:170px">${e(src)}</textarea><div class="acts"><button class="btn g" data-a="freset">Cargar ejemplo</button><button class="btn g" data-a="fsvg">Descargar SVG</button></div></div>
+<div class="card sc" id="fo"></div>
+<div class="card"><h3>Revisión automática</h3><ul id="fn" class="nl"></ul><h3 style="margin-top:.8rem">Consejos</h3><ul>${t.tips.map(x=>`<li>${e(x)}</li>`).join('')}</ul></div>
+${ed?`<div class="card"><h3>Guardar este diagrama</h3><label for="fnm">Nombre</label><input id="fnm" data-i="fname" maxlength="120" value="${e(S.fname)}" placeholder="${e(t.n)}"><label for="frq">Requerimiento relacionado</label><select id="frq" data-c="frid"><option value="">Sin vincular</option>${S.reqs.map(r=>`<option value="${e(r.id)}" ${S.frid===r.id?'selected':''}>${e(r.t)}</option>`).join('')}</select><div class="acts"><button class="btn" data-a="fsave">${S.fid?'Guardar cambios':'Guardar diagrama'}</button>${S.fid?'<button class="btn g" data-a="fsave" data-as="1">Guardar como nuevo</button><button class="btn g" data-a="fnew">Empezar uno nuevo</button>':''}</div></div>`:''}
+<div class="card"><h3>Diagramas guardados</h3>${saved}</div>`;fdraw()},
+qa(){const ed=ROLES[S.role].edit,st=Object.keys(S.qa);
+ $('v').innerHTML=st.map((s,si)=>{const it=qaItems(s),n=it.filter(x=>S.qd[s+x.l]).length;
+ return`<div class="card"><h3>${e(s)} <span class="pill">${n}/${it.length}</span></h3><div class="bar"><div style="width:${100*n/it.length}%"></div></div>`+it.map(x=>`<div class="chk"><label class="cl"><input type="checkbox" data-c="qd" data-s="${e(s)}" data-l="${e(x.l)}" ${S.qd[s+x.l]?'checked':''}><span>${e(x.l)}</span></label>${x.c?`<span class="pill">Agregado</span>${ed?`<button class="btn g sm" data-a="qxdel" data-s="${e(s)}" data-l="${e(x.l)}" aria-label="Quitar ${e(x.l)}">Quitar</button>`:''}`:''}</div>`).join('')+(n<it.length?`<p class="wa mu">Falta: ${it.filter(x=>!S.qd[s+x.l]).map(x=>e(x.l)).join('; ')}</p>`:'<p class="ok">Etapa completa</p>')+(ed?`<div class="row" style="margin-top:.5rem"><input id="qn${si}" maxlength="120" placeholder="Agregar ítem a «${e(s)}»" aria-label="Nuevo ítem para ${e(s)}"><button class="btn g" data-a="qxadd" data-s="${e(s)}" data-n="${si}">Agregar ítem</button></div>`:'')+`</div>`}).join('')},
+int(){if(API)return intApi();$('v').innerHTML=`<div class="grid">${INT.map(([n,d])=>`<div class="card"><h3>${n}</h3><p class="mu">${d}</p><button class="btn ${S.ints[n]?'':'g'}" onclick="S.ints[n]=!S.ints[n];V.int()">${S.ints[n]?'Conectado (demo)':'Conectar'}</button></div>`).join('')}</div><p class="mu">Demo visual: la conexión real usa OAuth 2.0 desde el servidor.</p>`},
+team(){const ad=S.role==='admin';$('v').innerHTML=`<div class="card"><h3>${ad?'Usuarios y perfiles':'Soporte'}</h3>${ad?'<p>Administrador: alta, baja y cambio de perfil (Soporte, Desarrollador, Test, Cliente).</p>':''}<p>Soporte resuelve bugs y fixes, y ayuda a los analistas dentro de la plataforma. Los tickets se asignan al equipo y quedan visibles para el líder.</p><div class="row"><input placeholder="Describí el problema o duda"><button class="btn">Crear ticket</button></div></div><div id="ul"></div>`;if(API&&ad)users()}};
 
-async function logout(){
-  await fetch('/api/auth/logout',{method:'POST',headers:{'X-Requested-With':'fetch'}});
-  window.location.reload();
-}
+function reqList(){const ed=ROLES[S.role].edit;
+ $('v').innerHTML=`${ed?`<div class="card"><h3>Nuevo requerimiento</h3><div class="row"><input id="nt" maxlength="150" placeholder="Nombre, ej. Alta de cliente" aria-label="Nombre del nuevo requerimiento"><button class="btn" data-a="rnew">Crear y abrir</button></div><p class="mu">Los requerimientos anteriores no se pierden: quedan guardados en este listado.</p></div>`:''}
+<div class="card"><h3>Requerimientos guardados</h3><div class="row"><input data-i="qry" value="${e(S.qry)}" placeholder="Buscar por título" aria-label="Buscar requerimiento"><select data-c="fil" aria-label="Filtrar"><option value="all">Todos</option><option value="mine" ${S.fil==='mine'?'selected':''}>Asignados a mí</option>${ESTS.map(x=>`<option ${S.fil===x?'selected':''}>${x}</option>`).join('')}</select></div><p class="mu" id="rc"></p><div id="rl"></div></div>`;renderRL()}
+function renderRL(){const h=$('rl');if(!h)return;const q=S.qry.trim().toLowerCase(),ed=ROLES[S.role].edit;
+ const L=S.reqs.filter(r=>(!q||String(r.t).toLowerCase().includes(q))&&(S.fil==='all'||(S.fil==='mine'?S.uid!=null&&r.asigU===S.uid:r.est===S.fil))).sort((a,b)=>(b.upd||0)-(a.upd||0));
+ $('rc').textContent=`${L.length} de ${S.reqs.length} requerimientos`;
+ h.innerHTML=L.map(r=>{const a=analyze(r),as=r.asigU!=null||(r.asig&&r.asig!=='Sin asignar');return`<div class="item"><div class="ih"><b>${e(r.t)}</b><span class="pill ${col(a.score)}">${a.score}/100</span><span class="pill">${e(r.est||'Borrador')}</span></div><div class="mu">Asignado a: ${e(as?r.asig:'sin asignar')} · ${(r.com||[]).length} comentarios${r.upd?' · Actualizado '+fmt(r.upd):''}</div><div class="acts"><button class="btn" data-a="open" data-id="${e(r.id)}">Abrir</button>${ed?`<button class="btn g" data-a="dup" data-id="${e(r.id)}">Duplicar</button><button class="btn g" data-a="del" data-id="${e(r.id)}">Eliminar</button>`:''}</div></div>`}).join('')||`<p class="mu">${S.reqs.length?'Ningún requerimiento coincide con el filtro.':'Todavía no hay requerimientos guardados.'}</p>`}
+function asOpts(q){const cv=q.asigU!=null?'u:'+q.asigU:'g:'+(q.asig||'Sin asignar');return'<optgroup label="Equipos">'+GROUPS.map(g=>`<option value="g:${e(g)}" ${cv==='g:'+g?'selected':''}>${e(g)}</option>`).join('')+'</optgroup>'+(S.users.length?'<optgroup label="Usuarios">'+S.users.map(u=>`<option value="u:${e(u.id)}" ${cv==='u:'+u.id?'selected':''}>${e(label(u))}</option>`).join('')+'</optgroup>':'')}
+function asgHtml(q){const can=['admin','cliente'].includes(S.role),cur=q.asigU!=null||(q.asig&&q.asig!=='Sin asignar');
+ return`<h3>Asignación</h3><p id="acur">${cur?`Asignado a <b>${e(q.asig)}</b>${q.asigBy?` <span class="mu">por ${e(q.asigBy)}${q.asigAt?' · '+fmt(q.asigAt):''}</span>`:''}`:'<span class="mu">Sin asignar todavía.</span>'}</p>`+(can?`<div class="row"><select id="asel" aria-label="Asignar a">${asOpts(q)}</select><button class="btn" data-a="asign">Asignar</button></div><p class="mu">Quien reciba la asignación lo verá con el filtro «Asignados a mí».</p>`:S.role==='test'?'<p class="mu">Asignar a otras personas está disponible en el perfil Cliente.</p>':'')}
+function canCom(c){return S.role==='admin'||(c.uid!=null&&c.uid===S.uid)}
+function renderCom(){const q=curReq(),h=$('comc');if(!h||!q)return;
+ h.innerHTML=q.com.map(c=>{const ed=S.ecid===c.id;return`<div class="cm"><div><b>${e(c.w)}</b> <span class="mu">${fmt(c.at)}${c.ed?' · editado':''}</span></div>`+(ed?`<textarea id="ec" aria-label="Editar comentario" maxlength="1000">${e(c.x)}</textarea><div class="acts"><button class="btn" data-a="csave" data-id="${e(c.id)}">Guardar</button><button class="btn g" data-a="ccancel">Cancelar</button></div>`:`<div class="ctx">${e(c.x)}</div>`+(canCom(c)?`<div class="acts"><button class="btn g sm" data-a="cedit" data-id="${e(c.id)}">Editar</button><button class="btn g sm" data-a="cdel" data-id="${e(c.id)}">Eliminar</button></div>`:''))+`</div>`}).join('')||'<p class="mu">Sin comentarios todavía.</p>'}
+async function loadUsers(){if(!API){S.users=DEMO_USERS;return}try{S.users=await api('GET','/api/users')}catch(_){}}
+function reqEdit(){const q=curReq(),ed=ROLES[S.role].edit,d=ed?'':'readonly';
+ const f=(k,l,h)=>`<label for="f-${k}">${l}</label><textarea id="f-${k}" ${d} data-i="f" data-k="${k}" placeholder="${h||''}">${e(q[k])}</textarea>`;
+ $('v').innerHTML=`<div class="acts" style="margin:0 0 .8rem"><button class="btn g" data-a="rlist">← Listado de requerimientos</button>${ed?`<button class="btn" data-a="rsave">Guardar</button><button class="btn g" data-a="dup" data-id="${e(q.id)}">Duplicar</button>`:''}</div>
+<div class="card"><label for="f-t">Título</label><input id="f-t" ${d} data-i="f" data-k="t" value="${e(q.t)}" maxlength="150"><label for="f-est">Estado</label><select id="f-est" data-c="est" ${ed?'':'disabled'}>${ESTS.map(x=>`<option ${q.est===x?'selected':''}>${x}</option>`).join('')}</select>${f('obj','Objetivo','¿Qué necesita el cliente y por qué?')}${f('alc','Alcance (incluí "Fuera de alcance")')}${f('cu','Casos de uso (uno por línea)')}${f('ca','Criterios de aceptación (Dado / Cuando / Entonces)')}${f('par','Parámetros a tener en cuenta')}
+<button class="btn" onclick="run()">Analizar y puntuar</button></div><div id="an"></div>
+<div class="card" id="asc">${asgHtml(q)}</div>
+<div class="card"><h3>Comentarios</h3><div id="comc"></div><label for="cm">Nuevo comentario</label><input id="cm" maxlength="1000" placeholder="Duda, mejora o avance sobre este requerimiento"><button class="btn" onclick="addC()">Comentar</button></div>`;
+ renderCom();
+ if(['admin','cliente'].includes(S.role))loadUsers().then(()=>{const s=$('asel'),c=curReq();if(s&&c&&S.view==='req'){const v=s.value;s.innerHTML=asOpts(c);if([...s.options].some(o=>o.value===v))s.value=v}})}
+async function run(){const q=curReq();if(!q)return;if(API&&S.role==='test'){try{S.tokens=(await api('POST','/api/tokens/consume')).tokens}catch(x){return alert('Sin tokens. Pedile al administrador el pase a Cliente.')}}else if(!tok())return;const a=analyze(q);if(S.role==='test'&&$('tk'))$('tk').textContent=S.tokens+' tokens';
+ $('an').innerHTML=`<div class="card"><h3>Puntaje: <span class="${col(a.score)}">${a.score}/100</span></h3>${bars(a)}<h3 style="margin-top:.8rem">Sugerencias</h3>${tipsUl(a)}</div>`}
+async function flush(){let n=0;while(saving&&n++<40)await new Promise(r=>setTimeout(r,50));await save()}
+async function addC(){const i=$('cm'),v=i.value.trim(),q=curReq();if(!v||!q)return;
+ if(API){try{await flush();await api('POST','/api/comments',{rid:q.id,text:v});await loadWs();i.value=''}catch(x){return alert(x.message)}}
+ else{q.com.push({id:uid(),uid:S.uid,w:myLabel(),x:v,at:Date.now()});i.value='';save()}
+ renderCom();toast('Comentario agregado')}
+function addCol(i){const n=$('cn'+i).value.trim(),t=$('ct'+i).value.trim();if(!n||!/^[\w]+$/.test(n))return alert('Usá un nombre sin espacios.');S.tables[i].c.push([n,t||'VARCHAR(50)','Sí','Nueva']);S.tables[i].nuevas=(S.tables[i].nuevas||[]).concat([[n,t||'VARCHAR(50)']]);V.bd()}
+function addTab(){const n=$('tn').value.trim();if(!/^[\w]+$/.test(n))return alert('Usá un nombre sin espacios.');S.tables.push({n,c:[['id','INT','No','PK']],nueva:1});V.bd()}
+function ddl(){return S.tables.map(t=>(t.nueva?`CREATE TABLE ${t.n} (\n  id INT PRIMARY KEY\n);\n`:'')+(t.nuevas||[]).map(c=>`ALTER TABLE ${t.n} ADD ${c[0]} ${c[1]} NULL;`).join('\n')).filter(x=>x.trim()).join('\n')||'-- Sin cambios pendientes'}
 
-function render(){
- if(!S.role)return login();
- const menu=ROLES[S.role];
- let navHtml='';
- menu.nav.forEach(k=>navHtml+=`<button class="nv ${S.view===k?'on':''}" onclick="S.view='${k}';render()">${NAV[k]}</button>`);
- navHtml+=`<button class="nv" id="lobtn" style="color:var(--er)">Cerrar Sesión</button>`;
+/* ---------- Diagramas ---------- */
+const wr=(t,n,max=3)=>{const w=String(t).split(/\s+/).filter(Boolean).flatMap(x=>x.match(new RegExp('.{1,'+n+'}','g'))||[x]);const L=[];let c='';w.forEach(x=>{if(c&&(c+' '+x).length>n){L.push(c);c=x}else c=c?c+' '+x:x});if(c)L.push(c);if(L.length>max){L.length=max;L[max-1]=L[max-1].slice(0,Math.max(1,n-1))+'…'}return L.length?L:['']};
+const tx=(x,y,L,o={})=>{const sz=o.sz||13,lh=sz*1.25,y0=y-(L.length-1)*lh/2;return`<text x="${x}" text-anchor="${o.a||'middle'}" font-size="${sz}" fill="${o.f||'var(--tx)'}"${o.w?` font-weight="${o.w}"`:''}${o.h?' stroke="var(--sf)" stroke-width="4" paint-order="stroke" stroke-linejoin="round"':''}>${L.map((l,i)=>`<tspan x="${x}" y="${(y0+i*lh+sz*.35).toFixed(1)}">${e(l)}</tspan>`).join('')}</text>`};
+const DEFS='<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--mu)"/></marker></defs>';
+const svg=(w,h,b,l)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${e(l)}" font-family="'Source Sans 3',system-ui,sans-serif" style="display:block">${DEFS}${b}</svg>`;
+const F={node:'fill="var(--sf)" stroke="var(--ac)" stroke-width="1.5"',dec:'fill="var(--ac2)" stroke="var(--ac)" stroke-width="1.5"'};
+const ln=(d,x='')=>`<path d="${d}" fill="none" stroke="var(--mu)" stroke-width="1.5" marker-end="url(#ar)" ${x}/>`;
+const badNotes=(bad,hint)=>bad.map(b=>['wa','No se entiende la línea «'+b+'». '+hint]);
+const DG={
+proceso:{n:'Flujo de proceso',s:'Pasos y decisiones de principio a fin',
+ cuando:'Para explicar cómo se desarrolla un proceso de punta a punta, con sus decisiones y caminos de error. Es el diagrama más simple y el mejor punto de partida.',
+ fmt:'Un paso por línea. Si termina en «?» es una decisión. Para la salida alternativa agregá «| No: qué ocurre» después de la decisión.',
+ ej:'Usuario solicita recuperación de clave\n¿Email registrado? | No: Mostrar mensaje genérico y terminar\nEnviar enlace temporal (válido 15 min)\nUsuario define nueva clave\nFin',
+ tips:['Empezá siempre con el disparador (qué inicia el proceso) y terminá con un cierre explícito.','Cada decisión necesita dos salidas: documentá también el camino de error o «No».','Usá verbos en acción («Validar datos», no «Validación»).','Si pasa de 10–12 pasos, dividilo en subprocesos.','Un paso, una acción: si ves «y», probablemente son dos pasos.'],
+ run(src){const L=lines(src);if(!L.length)return{svg:'',n:[['wa','Escribí al menos un paso para ver el diagrama.']]};
+  const comp=l=>/^no$/i.test(l)?'Sí':/^s[ií]$/i.test(l)?'No':'';
+  const st=L.map(l=>{const p=l.split('|'),m=p[0].trim(),dec=m.endsWith('?');let br=null;if(dec&&p.length>1){const t=p.slice(1).join('|').trim(),i=t.indexOf(':');br=i>0&&i<=12?{l:t.slice(0,i).trim(),t:t.slice(i+1).trim()}:{l:'No',t}}return{m,dec,br}});
+  const W=st.some(x=>x.br)?600:340,P=74;let s='';
+  st.forEach((x,i)=>{const y=i*P+10;
+   if(i){s+=ln(`M170 ${y-30} V${y-1}`);const c=st[i-1].br?comp(st[i-1].br.l):'';if(c)s+=tx(180,y-15,[c],{sz:11,a:'start',f:'var(--mu)'})}
+   if(x.dec)s+=`<polygon points="170,${y} 320,${y+22} 170,${y+44} 20,${y+22}" ${F.dec}/>`+tx(170,y+22,wr(x.m,26,2),{sz:12});
+   else s+=`<rect x="20" y="${y}" width="300" height="44" rx="${i==0||i==st.length-1?22:6}" ${F.node}/>`+tx(170,y+22,wr(x.m,40,2));
+   if(x.br)s+=ln(`M320 ${y+22} H358`)+tx(339,y+11,[x.br.l],{sz:11,f:'var(--mu)',h:1})+`<rect x="360" y="${y}" width="220" height="44" rx="6" ${F.node} stroke-dasharray="4 3"/>`+tx(470,y+22,wr(x.br.t||'—',30,2),{sz:12})});
+  const n=[],dn=st.filter(x=>x.dec);
+  if(st.length<3)n.push(['wa','Un flujo suele tener al menos 3 pasos: inicio, desarrollo y fin.']);
+  if(st.length>12)n.push(['wa','Tiene '+st.length+' pasos: considerá dividirlo en subprocesos (máx. 10–12 por diagrama).']);
+  if(!dn.length)n.push(['wa','No hay decisiones (líneas que terminan en «?»). ¿Qué pasa si algo falla o el dato no existe?']);
+  dn.filter(x=>!x.br).forEach(x=>n.push(['wa','La decisión «'+x.m+'» no tiene salida alternativa. Agregala así: ¿Pregunta? | No: qué ocurre.']));
+  if(!/fin|termina|finaliza|cierre|listo/i.test(st[st.length-1].m))n.push(['wa','El último paso debería indicar el cierre (por ejemplo «Fin»).']);
+  return{svg:svg(W,st.length*P+10,s,'Flujo de proceso'),n:n.length?n:[['ok','Sin observaciones: el flujo tiene inicio, decisiones con salida y cierre.']]}}},
+carriles:{n:'Flujo con carriles',s:'Quién hace cada paso (por actor)',
+ cuando:'Cuando intervienen varias personas, áreas o sistemas y necesitás dejar claro quién es responsable de cada paso y dónde se traspasa el trabajo.',
+ fmt:'Una línea por paso con el formato «Actor: acción». Si termina en «?» es una decisión. Los carriles aparecen en el orden en que se nombran los actores.',
+ ej:'Usuario: Solicita recuperar su clave\nSistema: ¿Email registrado?\nSistema: Envía enlace temporal\nUsuario: Abre el enlace y define nueva clave\nSistema: Actualiza la clave y cierra otras sesiones',
+ tips:['Un carril por actor o área; entre 2 y 5 carriles para que se lea bien.','Prestá atención a los traspasos: cada cambio de carril es una posible demora o error.','Si un paso no tiene responsable claro, el proceso tiene un hueco.','Nombrá a los actores por su rol, no por la persona.','Sumá las decisiones y los rechazos: son donde se rompen los procesos reales.'],
+ run(src){const L=lines(src);const empty={svg:'',n:[['wa','Escribí pasos con el formato «Actor: acción».']]};if(!L.length)return empty;
+  const lanes=[],st=[];let prev='',sa=0;
+  L.forEach(l=>{const i=l.indexOf(':');let a,t;if(i>0&&i<=30){a=l.slice(0,i).trim();t=l.slice(i+1).trim()}else{a=prev||'General';t=l;sa++}prev=a;if(!t)return;if(!lanes.includes(a))lanes.push(a);st.push({a,t,dec:t.endsWith('?')})});
+  if(!st.length)return empty;st.forEach(x=>x.j=lanes.indexOf(x.a));
+  const LW=190,Hh=40,P=78,H=Hh+st.length*P+14,W=lanes.length*LW;let s='';
+  lanes.forEach((a,j)=>{s+=`<rect x="${j*LW}" y="0" width="${LW}" height="${H}" fill="${j%2?'var(--bg)':'none'}" stroke="var(--ln)"/><rect x="${j*LW}" y="0" width="${LW}" height="${Hh}" fill="var(--ac2)" stroke="var(--ln)"/>`+tx(j*LW+LW/2,Hh/2,wr(a,22,2),{sz:12,w:700})});
+  const pos=st.map((x,i)=>({cx:x.j*LW+LW/2,y:Hh+10+i*P}));
+  st.forEach((x,i)=>{const{cx,y}=pos[i];if(x.dec)s+=`<polygon points="${cx},${y} ${cx+82},${y+25} ${cx},${y+50} ${cx-82},${y+25}" ${F.dec}/>`+tx(cx,y+25,wr(x.t,17,3),{sz:10.5});else s+=`<rect x="${cx-80}" y="${y}" width="160" height="50" rx="6" ${F.node}/>`+tx(cx,y+25,wr(x.t,24,3),{sz:12})});
+  st.forEach((x,i)=>{if(!i)return;const p=pos[i-1],q=pos[i],y1=p.y+50,y2=q.y;s+=p.cx===q.cx?ln(`M${p.cx} ${y1} V${y2-1}`):ln(`M${p.cx} ${y1} V${(y1+y2)/2} H${q.cx} V${y2-1}`)});
+  const n=[];
+  if(lanes.length<2)n.push(['wa','Hay un solo actor: sin carriles no aporta sobre el flujo de proceso. Indicá quién hace cada paso («Actor: acción»).']);
+  if(lanes.length>5)n.push(['wa','Hay '+lanes.length+' actores: más de 5 carriles se vuelve difícil de leer. Agrupá o dividí el flujo.']);
+  if(sa)n.push(['wa',sa+' línea(s) sin «Actor:» se asignaron al actor anterior. Indicá quién ejecuta cada paso.']);
+  let sw=0;st.forEach((x,i)=>{if(i&&x.j!==st[i-1].j)sw++});if(st.length>3&&sw/(st.length-1)>.75)n.push(['wa','El flujo cambia de carril casi en cada paso (ida y vuelta). Revisá si todos los traspasos son necesarios.']);
+  if(!st.some(x=>x.dec))n.push(['wa','No hay decisiones (líneas que terminan en «?»). Sumá los caminos alternativos o de error.']);
+  return{svg:svg(W,H,s,'Flujo con carriles'),n:n.length?n:[['ok','Sin observaciones: actores claros, traspasos razonables y decisiones presentes.']]}}},
+secuencia:{n:'Secuencia',s:'Mensajes entre sistemas o componentes en el tiempo',
+ cuando:'Para documentar cómo se comunican el usuario, la aplicación, las APIs y otros sistemas en un escenario concreto. Muy útil para integraciones.',
+ fmt:'Una línea por mensaje: «Origen -> Destino: mensaje». Para una respuesta usá la flecha punteada: «Origen --> Destino: respuesta». Se dibuja de arriba hacia abajo en el orden escrito.',
+ ej:'Usuario -> App: Solicita recuperación\nApp -> API: POST /recuperar\nAPI -> BD: Buscar usuario por email\nBD --> API: Usuario encontrado\nAPI -> Correo: Enviar enlace temporal\nAPI --> App: 202 Aceptado\nApp --> Usuario: Revisá tu correo',
+ tips:['Un diagrama de secuencia = un escenario. Hacé otro para el camino de error.','Mantenelo en 4–6 participantes y menos de 15 mensajes.','Mostrá siempre las respuestas (flecha punteada), incluidos los errores.','Poné datos concretos en los mensajes (método, endpoint, campos clave): es lo que lee el desarrollador.','Ordená los participantes de izquierda a derecha según quién inicia la interacción.'],
+ run(src){const P=[],M=[],bad=[];
+  lines(src).forEach(l=>{const m=l.match(/^(.+?)\s*(-->|->)\s*(.+?)\s*(?::\s*(.*))?$/);if(!m){bad.push(l);return}const f=m[1].trim(),t=m[3].trim();[f,t].forEach(x=>{if(!P.includes(x))P.push(x)});M.push({f,t,x:(m[4]||'').trim(),r:m[2]==='-->'})});
+  const hint='Usá «Origen -> Destino: mensaje» o «Origen --> Destino: respuesta».';
+  if(!M.length)return{svg:'',n:[['wa','Escribí mensajes con el formato «Origen -> Destino: mensaje».'],...badNotes(bad,hint)]};
+  const CW=180,H=84+M.length*54+16,W=P.length*CW,cx=P.map((_,i)=>i*CW+CW/2);let s='';
+  P.forEach((p,i)=>{s+=`<line x1="${cx[i]}" y1="42" x2="${cx[i]}" y2="${H-8}" stroke="var(--ln)" stroke-width="1.5" stroke-dasharray="4 4"/><rect x="${cx[i]-65}" y="6" width="130" height="36" rx="6" ${F.node}/>`+tx(cx[i],24,wr(p,16,2),{sz:12,w:700})});
+  M.forEach((m,i)=>{const y=84+i*54,a=cx[P.indexOf(m.f)],b=cx[P.indexOf(m.t)],da=m.r?'stroke-dasharray="6 4"':'';
+   if(a===b)s+=ln(`M${a} ${y} h36 v22 h-36`,da)+tx(a+42,y+11,wr(m.x||'…',22,2),{sz:11,a:'start',h:1});
+   else s+=ln(`M${a} ${y} L${b} ${y}`,da)+tx((a+b)/2,y-12,wr(m.x,Math.max(10,Math.floor((Math.abs(b-a)-12)/6.2)),2),{sz:11,h:1})});
+  const n=badNotes(bad,hint);
+  if(P.length>6)n.push(['wa','Hay '+P.length+' participantes: lo ideal son 4–6. Dividí en dos secuencias.']);
+  if(M.length>15)n.push(['wa','Hay '+M.length+' mensajes: dividí el escenario para que se pueda leer.']);
+  if(!M.some(m=>m.r))n.push(['wa','No hay respuestas (flecha punteada «-->»). Mostrá qué devuelve cada llamada.']);
+  if(!M.some(m=>/error|inv[aá]lid|rechaz|fall|no existe|timeout|\b[45]\d\d\b/i.test(m.x)))n.push(['wa','No se ve ningún camino de error. Documentá al menos un escenario alternativo (dato inválido, servicio caído).']);
+  if(M.some(m=>!m.x))n.push(['wa','Hay mensajes sin texto: nombrá cada interacción.']);
+  return{svg:svg(W,H,s,'Diagrama de secuencia'),n:n.length?n:[['ok','Sin observaciones: escenario acotado, con respuestas y camino de error.']]}}},
+casos:{n:'Casos de uso',s:'Qué hace cada actor con el sistema',
+ cuando:'Al inicio del análisis, para acordar con el Product Owner el alcance funcional: quién usa el sistema y qué puede hacer cada uno.',
+ fmt:'Una línea por actor: «Actor: Caso 1, Caso 2». Una línea que empiece con «#» le pone nombre al sistema. Si dos actores comparten un caso, escribilo igual en ambos.',
+ ej:'# Recuperación de acceso\nUsuario: Solicitar recuperación, Restablecer contraseña\nAdministrador: Bloquear usuario, Restablecer contraseña\nServicio de correo: Enviar enlace',
+ tips:['Nombrá cada caso con verbo en infinitivo + objeto («Solicitar recuperación»).','No olvides los actores secundarios: administradores, soporte y sistemas externos.','Un caso de uso es un objetivo del actor, no un paso de pantalla.','Si tenés más de 10–12 casos, agrupalos por módulo o por subsistema.','Cada caso debería tener después su descripción, flujo principal, alternativos y criterios de aceptación.'],
+ run(src){let sys='Sistema';const A=[],C=[],E=[],bad=[];
+  lines(src).forEach(l=>{if(l[0]==='#'){sys=l.replace(/^#\s*/,'')||sys;return}const i=l.indexOf(':');if(i<=0){bad.push(l);return}const a=l.slice(0,i).trim(),cs=l.slice(i+1).split(/[,;]/).map(x=>x.trim()).filter(Boolean);if(!a||!cs.length){bad.push(l);return}let ai=A.indexOf(a);if(ai<0){ai=A.length;A.push(a)}cs.forEach(c=>{let ci=C.findIndex(x=>x.toLowerCase()===c.toLowerCase());if(ci<0){ci=C.length;C.push(c)}if(!E.some(z=>z[0]===ai&&z[1]===ci))E.push([ai,ci])})});
+  const hint='Usá «Actor: Caso 1, Caso 2».';
+  if(!A.length)return{svg:'',n:[['wa','Escribí «Actor: Caso de uso 1, Caso de uso 2». Podés nombrar el sistema con una línea «# Nombre».'],...badNotes(bad,hint)]};
+  const BX=210,RX=120,CX=BX+140,PC=62,cy=C.map((_,i)=>66+i*PC);
+  const ay=A.map((_,ai)=>{const ys=E.filter(z=>z[0]===ai).map(z=>cy[z[1]]);return ys.reduce((a,b)=>a+b,0)/ys.length});
+  let last=-1e9;A.map((_,i)=>i).sort((p,q)=>ay[p]-ay[q]).forEach(i=>{ay[i]=Math.max(ay[i],last+110,70);last=ay[i]});
+  const H=Math.max(66+C.length*PC+20,last+70),W=BX+280+30;
+  let s=`<rect x="${BX}" y="8" width="280" height="${H-16}" rx="8" fill="none" stroke="var(--ln)" stroke-width="1.5"/>`+tx(BX+140,26,wr(sys,34,1),{sz:13,w:700,f:'var(--mu)'});
+  E.forEach(([a,c])=>{s+=`<line x1="84" y1="${(ay[a]-14).toFixed(1)}" x2="${CX-RX}" y2="${cy[c]}" stroke="var(--mu)" stroke-width="1.3"/>`});
+  C.forEach((c,i)=>{s+=`<ellipse cx="${CX}" cy="${cy[i]}" rx="${RX}" ry="25" ${F.dec}/>`+tx(CX,cy[i],wr(c,26,2),{sz:12})});
+  A.forEach((a,i)=>{const y=ay[i],o='fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="round"';s+=`<circle cx="70" cy="${y-30}" r="9" ${o}/><path d="M70 ${y-21} V${y+2} M56 ${y-14} H84 M70 ${y+2} L59 ${y+20} M70 ${y+2} L81 ${y+20}" ${o}/>`+tx(70,y+36,wr(a,13,2),{sz:12,w:700})});
+  const n=badNotes(bad,hint);
+  if(A.length<2)n.push(['wa','Hay un solo actor. Pensá en otros: administrador, soporte, sistemas externos.']);
+  if(C.length>12)n.push(['wa','Hay '+C.length+' casos de uso: agrupalos por módulo o dividí el diagrama.']);
+  const nv=C.filter(c=>!/^\p{L}+(ar|er|ir)(?=\s|$)/iu.test(c));
+  if(nv.length)n.push(['wa','Nombrá los casos con verbo en infinitivo (ej. «Solicitar recuperación»). Revisá: '+nv.slice(0,3).join(', ')+'.']);
+  return{svg:svg(W,H,s,'Diagrama de casos de uso'),n:n.length?n:[['ok','Sin observaciones: actores y casos bien nombrados.']]}}},
+estados:{n:'Estados',s:'Ciclo de vida de una entidad (pedido, ticket, usuario…)',
+ cuando:'Cuando algo cambia de estado a lo largo del tiempo y hay reglas sobre qué transiciones están permitidas (por ejemplo un pedido, un ticket o una solicitud).',
+ fmt:'Una línea por transición: «Origen -> Destino: evento». Usá «[*]» como inicio («[*] -> Estado») o como fin («Estado -> [*]»).',
+ ej:'[*] -> Solicitada\nSolicitada -> Enlace enviado: Email válido\nEnlace enviado -> Completada: Clave actualizada\nEnlace enviado -> Expirada: Pasan 15 min\nExpirada -> Solicitada: Pide nuevo enlace\nCompletada -> [*]',
+ tips:['Los estados son situaciones («Pendiente de pago»), no acciones («Pagar»); las acciones van en el evento.','Cada flecha debería decir qué la dispara.','Buscá estados sin salida y estados a los que nunca se llega: suelen ser errores de análisis.','Definí quién o qué puede disparar cada transición (permisos).','Más de 8 estados suele indicar que hay dos ciclos de vida mezclados.'],
+ run(src){const N=[],E=[],bad=[];
+  lines(src).forEach(l=>{const m=l.match(/^(.+?)\s*->\s*(.+?)\s*(?::\s*(.*))?$/);if(!m){bad.push(l);return}const f=m[1].trim()==='[*]'?'#ini':m[1].trim(),t=m[2].trim()==='[*]'?'#fin':m[2].trim();[f,t].forEach(k=>{if(!N.includes(k))N.push(k)});E.push({f,t,ev:(m[3]||'').trim()})});
+  const hint='Usá «Origen -> Destino: evento».';
+  if(!E.length)return{svg:'',n:[['wa','Escribí transiciones con el formato «Origen -> Destino: evento».'],...badNotes(bad,hint)]};
+  const hw=k=>k==='#ini'?8:k==='#fin'?11:58,hh=k=>k==='#ini'?8:k==='#fin'?11:19;
+  // niveles: BFS desde el estado inicial; el final siempre queda abajo de todo
+  const lv={},root=N.includes('#ini')?'#ini':N[0];lv[root]=0;let qq=[root];
+  while(qq.length){const nq=[];qq.forEach(k=>E.forEach(x=>{if(x.f===k&&lv[x.t]===undefined){lv[x.t]=lv[k]+1;nq.push(x.t)}}));qq=nq}
+  const mx0=Math.max(...Object.values(lv));N.forEach(k=>{if(lv[k]===undefined)lv[k]=mx0+1});
+  if(lv['#fin']!==undefined&&N.length>1)lv['#fin']=Math.max(...N.filter(k=>k!=='#fin').map(k=>lv[k]))+1;
+  const ls=[...new Set(Object.values(lv))].sort((a,b)=>a-b);N.forEach(k=>{lv[k]=ls.indexOf(lv[k])});
+  const rows=[];N.forEach(k=>{(rows[lv[k]]=rows[lv[k]]||[]).push(k)});
+  const COLW=190,ROWH=104,maxRow=Math.max(...rows.map(r=>r.length)),W0=Math.max(400,maxRow*COLW+60);
+  const back=E.filter(x=>x.f!==x.t&&lv[x.t]<lv[x.f]),W=W0+(back.length?70+back.length*45:0),H=40+(rows.length-1)*ROWH+60,pos={};
+  rows.forEach((r,y)=>r.forEach((k,i)=>{pos[k]={x:W0/2+(i-(r.length-1)/2)*COLW,y:40+y*ROWH}}));
+  const bd=(k,to)=>{const p=pos[k],dx=to.x-p.x,dy=to.y-p.y;if(!dx&&!dy)return p;const t=Math.min(dx?hw(k)/Math.abs(dx):1e9,dy?hh(k)/Math.abs(dy):1e9);return{x:p.x+dx*t,y:p.y+dy*t}};
+  let s='',bi=0;
+  E.forEach(x=>{const a=pos[x.f],b=pos[x.t];
+   if(x.f===x.t){const t=hh(x.f);s+=ln(`M${a.x-16} ${a.y-t} C${a.x-16} ${a.y-t-38} ${a.x+16} ${a.y-t-38} ${a.x+16} ${a.y-t}`)+(x.ev?tx(a.x,a.y-t-34,wr(x.ev,20,2),{sz:11,h:1}):'');return}
+   if(lv[x.t]<lv[x.f]){const d=30+(bi++)*45,x0=a.x+hw(x.f),x3=b.x+hw(x.t),xr=Math.max(a.x,b.x)+58+d*1.3+20;
+    s+=ln(`M${x0} ${a.y} C${xr} ${a.y} ${xr} ${b.y} ${x3} ${b.y}`)+(x.ev?tx(.125*x0+.75*xr+.125*x3,(a.y+b.y)/2,wr(x.ev,18,2),{sz:11,h:1}):'');return}
+   const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,rev=E.some(z=>z.f===x.t&&z.t===x.f),sk=lv[x.t]-lv[x.f]>1,off=rev?30:sk?(a.x>W0/2+1?-60:60):0,C={x:(a.x+b.x)/2-dy/len*off,y:(a.y+b.y)/2+dx/len*off},p1=bd(x.f,C),p2=bd(x.t,C);
+   s+=ln(`M${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q${C.x.toFixed(1)} ${C.y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`);
+   if(x.ev)s+=tx(.25*p1.x+.5*C.x+.25*p2.x,.25*p1.y+.5*C.y+.25*p2.y,wr(x.ev,18,2),{sz:11,h:1})});
+  N.forEach(k=>{const p=pos[k];if(k==='#ini')s+=`<circle cx="${p.x}" cy="${p.y}" r="8" fill="var(--tx)"/>`;else if(k==='#fin')s+=`<circle cx="${p.x}" cy="${p.y}" r="11" fill="none" stroke="var(--tx)" stroke-width="1.5"/><circle cx="${p.x}" cy="${p.y}" r="6" fill="var(--tx)"/>`;else s+=`<rect x="${p.x-58}" y="${p.y-19}" width="116" height="38" rx="19" ${F.node}/>`+tx(p.x,p.y,wr(k,15,2),{sz:12,w:700})});
+  
+  const n=badNotes(bad,hint),st=N.filter(k=>k[0]!=='#');
+  if(!N.includes('#ini'))n.push(['wa','Falta el estado inicial. Agregá una línea «[*] -> PrimerEstado».']);
+  if(!N.includes('#fin'))n.push(['wa','No hay estado final. Si el ciclo termina, marcalo con «Estado -> [*]».']);
+  const dead=st.filter(k=>!E.some(x=>x.f===k));if(dead.length)n.push(['wa','Estados sin salida: '+dead.join(', ')+'. ¿Les falta una transición o deberían ir a [*]?']);
+  if(N.includes('#ini')){const seen=new Set(['#ini']);let ch=true;while(ch){ch=false;E.forEach(x=>{if(seen.has(x.f)&&!seen.has(x.t)){seen.add(x.t);ch=true}})}const un=st.filter(k=>!seen.has(k));if(un.length)n.push(['wa','No se llega nunca a: '+un.join(', ')+'. Revisá las transiciones de entrada.'])}
+  if(E.some(x=>!x.ev&&x.f!=='#ini'))n.push(['wa','Hay transiciones sin evento: cada flecha debería indicar qué la dispara.']);
+  if(st.length>8)n.push(['wa','Hay '+st.length+' estados: considerá dividir en dos ciclos de vida.']);
+  return{svg:svg(W,H,s,'Diagrama de estados'),n:n.length?n:[['ok','Sin observaciones: hay inicio, fin, eventos y todos los estados son alcanzables.']]}}}};
+function fdraw(){const r=DG[S.ftipo].run(S.fsrc[S.ftipo]??DG[S.ftipo].ej);S.fsvg=r.svg;$('fo').innerHTML=r.svg||'<p class="mu">Escribí el contenido para ver el diagrama.</p>';$('fn').innerHTML=r.n.map(([k,x])=>`<li class="${k}">${k==='ok'?'✓':'⚠'} ${e(x)}</li>`).join('')}
 
- let mainHtml=`<div class="top"><div><h2 style="margin:0">${NAV[S.view]}</h2><span class="mu">Espacio compartido / Control de versiones optimista</span></div><div style="display:flex;gap:.5rem;align-items:center"><span class="pill">${menu.n}</span><span class="pill" style="background:var(--ln);color:var(--tx)">Tokens: ${S.tokens}</span></div></div>`;
+/* ---------- Acciones (delegación de eventos: nada de datos del usuario dentro de onclick) ---------- */
+const ACT={
+open(d){S.cid=d.id;S.rv='edit';S.view='req';S.ecid=null;draw();scrollTo(0,0)},
+rlist(){S.rv='list';S.ecid=null;V.req();scrollTo(0,0)},
+rnew(){const i=$('nt'),t=i.value.trim();if(!t)return i.focus();const r=mkReq(t.slice(0,150));S.reqs.push(r);S.cid=r.id;S.rv='edit';dirty();V.req();scrollTo(0,0);toast('Requerimiento creado. Los anteriores siguen en el listado.')},
+dup(d){const r=S.reqs.find(x=>x.id===d.id);if(!r)return;const c=JSON.parse(JSON.stringify(r));Object.assign(c,{id:uid(),t:(r.t+' (copia)').slice(0,150),com:[],est:'Borrador',asig:'Sin asignar',asigU:null,upd:Date.now()});delete c.asigBy;delete c.asigAt;S.reqs.push(c);dirty();if(S.rv==='list')renderRL();toast('Requerimiento duplicado')},
+del(d){const r=S.reqs.find(x=>x.id===d.id);if(!r||!confirm('¿Eliminar «'+r.t+'»? También se borran sus comentarios. No se puede deshacer.'))return;S.reqs=S.reqs.filter(x=>x.id!==d.id);S.mej.forEach(m=>{if(m.rid===d.id)m.rid=''});S.dg.forEach(g=>{if(g.rid===d.id)g.rid=''});if(S.cid===d.id){S.cid=null;S.rv='list'}dirty();V.req();toast('Requerimiento eliminado')},
+async rsave(){setSv('Guardando…');await flush();toast(API?(snap()===last?'Guardado':'No se pudo guardar; se reintenta solo'):'Guardado en este navegador')},
+asign(){const q=curReq();if(!q)return;const v=$('asel').value,now=Date.now();
+ if(v.startsWith('u:')){const u=S.users.find(x=>String(x.id)===v.slice(2));if(!u)return toast('Usuario no encontrado');q.asig=label(u);q.asigU=u.id}else{q.asig=v.slice(2)||'Sin asignar';q.asigU=null}
+ if(q.asig==='Sin asignar'){delete q.asigBy;delete q.asigAt}else{q.asigBy=myLabel();q.asigAt=now}
+ q.upd=now;dirty();$('asc').innerHTML=asgHtml(q);toast(q.asig==='Sin asignar'?'Asignación quitada':'Asignado a '+q.asig)},
+cedit(d){S.ecid=d.id;renderCom();const t=$('ec');if(t)t.focus()},
+ccancel(){S.ecid=null;renderCom()},
+async csave(d){const v=($('ec').value||'').trim(),q=curReq();if(!v||!q)return;
+ try{if(API){await flush();await api('PUT','/api/comments/'+encodeURIComponent(d.id),{text:v});await loadWs()}else{const c=q.com.find(x=>x.id===d.id);if(c){c.x=v;c.ed=1}save()}}catch(x){return alert(x.message)}
+ S.ecid=null;renderCom();toast('Comentario actualizado')},
+async cdel(d){if(!confirm('¿Eliminar este comentario?'))return;const q=curReq();if(!q)return;
+ try{if(API){await flush();await api('DELETE','/api/comments/'+encodeURIComponent(d.id));await loadWs()}else{q.com=q.com.filter(x=>x.id!==d.id);save()}}catch(x){return alert(x.message)}
+ renderCom();toast('Comentario eliminado')},
+madd(){const t=$('mt').value.trim();if(!t)return $('mt').focus();S.mej.push({id:uid(),t:t.slice(0,300),pri:$('mp').value,est:'Pendiente',rid:$('mr').value,by:myLabel(),at:Date.now()});dirty();V.dash();toast('Mejora agregada')},
+mdel(d){if(!confirm('¿Eliminar esta mejora?'))return;S.mej=S.mej.filter(m=>m.id!==d.id);dirty();V.dash()},
+qxadd(d){const i=$('qn'+d.n),v=i.value.trim().slice(0,120),s=d.s;if(!v)return i.focus();if(qaItems(s).some(x=>x.l.toLowerCase()===v.toLowerCase()))return toast('Ese ítem ya existe en esta etapa');const a=S.qx[s]=S.qx[s]||[];if(a.length>=50)return toast('Límite de 50 ítems propios por etapa');a.push(v);dirty();V.qa();toast('Ítem agregado')},
+qxdel(d){S.qx[d.s]=(S.qx[d.s]||[]).filter(x=>x!==d.l);delete S.qd[d.s+d.l];dirty();V.qa()},
+ftipo(d){S.ftipo=d.t;S.fid=null;S.fname='';V.flow()},
+freset(){S.fsrc[S.ftipo]=DG[S.ftipo].ej;V.flow()},
+fnew(){S.fid=null;S.fname='';S.frid='';S.fsrc[S.ftipo]=DG[S.ftipo].ej;V.flow()},
+fsave(d){const src=(S.fsrc[S.ftipo]??DG[S.ftipo].ej).trim();if(!src)return toast('El diagrama está vacío');const t=(S.fname||'').trim()||DG[S.ftipo].n,now=Date.now();
+ const g=S.fid&&!d.as?S.dg.find(x=>x.id===S.fid):null;
+ if(g){Object.assign(g,{t,tipo:S.ftipo,src,rid:S.frid,at:now})}else{const n={id:uid(),t,tipo:S.ftipo,src,rid:S.frid,by:myLabel(),at:now};S.dg.unshift(n);S.fid=n.id}
+ S.fname=t;dirty();V.flow();toast('Diagrama guardado')},
+fopen(d){const g=S.dg.find(x=>x.id===d.id);if(!g)return;S.ftipo=DG[g.tipo]?g.tipo:'proceso';S.fsrc[S.ftipo]=g.src;S.fname=g.t;S.fid=g.id;S.frid=g.rid||'';V.flow();scrollTo(0,0)},
+fdel(d){const g=S.dg.find(x=>x.id===d.id);if(!g||!confirm('¿Eliminar el diagrama «'+g.t+'»?'))return;S.dg=S.dg.filter(x=>x.id!==d.id);if(S.fid===d.id)S.fid=null;dirty();V.flow()},
+fsvg(){if(!S.fsvg)return toast('Todavía no hay diagrama para descargar');const cs=getComputedStyle(document.documentElement);let s=S.fsvg.replace(/var\(--(\w+)\)/g,(m,k)=>cs.getPropertyValue('--'+k).trim()||m);s=s.replace(/(<svg[^>]*>)/,'$1<rect width="100%" height="100%" fill="'+cs.getPropertyValue('--sf').trim()+'"/>');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([s],{type:'image/svg+xml'}));a.download=((S.fname||DG[S.ftipo].n).replace(/[^\w-]+/g,'_')||'diagrama')+'.svg';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}};
+const CHG={
+est(d,el){const q=curReq();if(q&&ROLES[S.role].edit){q.est=el.value;q.upd=Date.now();dirty()}},
+fil(d,el){S.fil=el.value;renderRL()},
+dsel(d,el){S.dsel=el.value;V.dash()},
+mest(d,el){const m=S.mej.find(x=>x.id===d.id);if(m){m.est=el.value;dirty();V.dash()}},
+qd(d,el){const k=d.s+d.l;if(el.checked)S.qd[k]=true;else delete S.qd[k];dirty();V.qa()},
+frid(d,el){S.frid=el.value}};
+const INP={
+f(d,el){const q=curReq();if(!q||!ROLES[S.role].edit)return;q[d.k]=el.value;q.upd=Date.now();dirty()},
+qry(d,el){S.qry=el.value;renderRL()},
+fsrc(d,el){S.fsrc[S.ftipo]=el.value;fdraw()},
+fname(d,el){S.fname=el.value}};
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(b&&ACT[b.dataset.a])ACT[b.dataset.a](b.dataset,b,ev)});
+document.addEventListener('change',ev=>{const b=ev.target.closest('[data-c]');if(b&&CHG[b.dataset.c])CHG[b.dataset.c](b.dataset,b,ev)});
+document.addEventListener('input',ev=>{const b=ev.target.closest('[data-i]');if(b&&INP[b.dataset.i])INP[b.dataset.i](b.dataset,b,ev)});
 
- if(S.view==='dash'){
-  let ok=0,wa=0,er=0;S.reqs.forEach(x=>{const s=analyze(x).score;if(s>=80)ok++;else if(s>=50)wa++;else er++});
-  mainHtml+=`<div class="grid"><div class="card"><span class="mu">Calidad Global</span><div class="big">${S.reqs.length?Math.round(S.reqs.reduce((a,b)=>a+analyze(b).score,0)/S.reqs.length):0}%</div><div class="bar" style="margin-top:.4rem"><div style="width:${S.reqs.length?Math.round(S.reqs.reduce((a,b)=>a+analyze(b).score,0)/S.reqs.length):0}%"></div></div></div><div class="card"><span class="mu">Estado de Requerimientos</span><div style="margin-top:.5rem;font-weight:600"><span class="ok">● ${ok} Óptimos</span> · <span class="wa">● ${wa} Alertas</span> · <span class="er">● ${er} Críticos</span></div></div></div>`;
- }
- if(S.view==='req'){
-  mainHtml+=`<div class="row" style="margin-bottom:1rem"><select id="selR" style="margin:0;flex:2" onchange="S.cur=Number(this.value);render()">`;
-  S.reqs.forEach((x,i)=>mainHtml+=`<option value="${i}" ${S.cur===i?'selected':''}>${e(x.t)}</option>`);
-  mainHtml+=`</select><button class="btn g" onclick="S.reqs.push({t:'Nuevo requerimiento',obj:'',alc:'',cu:'',ca:'',par:'',asig:'Sin asignar',com:[],ok:0});S.cur=S.reqs.length-1;render()">Nuevo desde cero</button></div>`;
-  const r=S.reqs[S.cur];if(r){
-   const az=analyze(r);
-   mainHtml+=`<div class="card"><label>Título del Requerimiento</label><input type="text" id="rt" value="${e(r.t)}" ${!menu.edit?'disabled':''}><div class="grid" style="margin-top:1rem"><div><label>Objetivo de Negocio</label><textarea id="rob" ${!menu.edit?'disabled':''}>${e(r.obj)}</textarea></div><div><label>Alcance Funcional</label><textarea id="ral" ${!menu.edit?'disabled':''}>${e(r.alc)}</textarea></div></div><div class="grid"><div><label>Casos de Uso (uno por línea)</label><textarea id="rcu" placeholder="CU1 Nombre" ${!menu.edit?'disabled':''}>${e(r.cu)}</textarea></div><div><label>Criterios de Aceptación (Dado/Cuando/Entonces)</label><textarea id="rca" placeholder="Dado... Cuando... Entonces..." ${!menu.edit?'disabled':''}>${e(r.ca)}</textarea></div></div><label>Parámetros y Reglas de Negocio</label><textarea id="rpa" ${!menu.edit?'disabled':''}>${e(r.par)}</textarea>${menu.edit?`<button class="btn" onclick="saveReq()">Guardar Cambios</button>`:''}</div><div class="card"><h3>Métricas de Calidad Automatizadas</h3><div style="display:flex;gap:1.5rem;align-items:center;margin:.8rem 0"><div class="big ${col(az.score)}">${az.score}%</div><div style="flex:1"><b>Estructura de la especificación:</b><div class="grid" style="font-size:.85rem;margin-top:.3rem">${Object.entries(az.sec).map(([k,v])=>`<div>${k}: <span class="${col(v)}">${v}%</span></div>`).join('')}</div></div></div>${az.tips.length?`<h4>Sugerencias para mejorar el requerimiento:</h4><ul>${az.tips.map(x=>`<li>${e(x)}</li>`).join('')}</ul>`:''}</div>`;
-  }
- }
- if(S.view==='bd'){
-  mainHtml+=`<div class="card"><h3>Modelo Relacional</h3><div class="sc"><table><thead><tr><th>Tabla</th><th>Columna</th><th>Tipo</th><th>Null</th><th>Key</th></tr></thead><tbody>`;
-  S.tables.forEach(t=>t.c.forEach((c,i)=>mainHtml+=`<tr><td>${i===0?`<b>${e(t.n)}</b>`:''}</td><td>${e(c)}</td><td>${e(c)}</td><td>${e(c)}</td><td>${e(c)}</td></tr>`));
-  mainHtml+=`</tbody></table></div></div>`;
- }
- if(S.view==='flow' || S.view==='qa' || S.view==='int' || S.view==='team'){
-  mainHtml+=`<div class="card"><h3>Módulos de Arquitectura Extendida</h3><p style="color:var(--mu)">Los flujogramas, integraciones Jira/Confluence y matrices QA se vinculan directamente mediante los endpoints securizados de Node.js en producción.</p></div>`;
- }
-
- $('root').innerHTML=`<div class="app"><aside><div class="aside-header"><div class="logo">FUNTION <i>ANALYTS</i></div><button id="mT" class="hamburguesa-btn">☰</button></div><div class="nav-container" id="nC">${navHtml}</div></aside><main>${mainHtml}</main></div>`;
- 
- const mT=document.getElementById('mT'),nC=document.getElementById('nC');
- if(mT&&nC){
-  mT.onclick=(x)=>{x.stopPropagation();nC.classList.toggle('open')};
-  nC.onclick=()=>{nC.classList.remove('open')};
- }
- 
- const lo=document.getElementById('lobtn');if(lo){lo.onclick=async(x)=>{x.preventDefault();x.stopPropagation();await logout()}}
-}
-
-function saveReq(){
- const r=S.reqs[S.cur];if(!r)return;
- r.t=$('rt').value;r.obj=$('rob').value;r.alc=$('ral').value;r.cu=$('rcu').value;r.ca=$('rca').value;r.par=$('rpa').value;
- render();
-}
-
-async function check(){
- try{
-  const r=await fetch('/api/auth/me',{headers:{'X-Requested-With':'fetch'}});
-  if(r.ok){const d=await r.json();S.role=d.role;S.tokens=d.tokens}
- }catch(_){}render();
-}
-check();
-</script>
-</body>
-</html>
+/* ---------- Conexión con el servidor. Sin servidor (ej. GitHub Pages) funciona en modo demo con localStorage ---------- */
+const KEY='funtion_analyts_v1';let API=false,ver=0,last='',saving=false;
+const api=(m,u,b)=>fetch(u,{method:m,credentials:'same-origin',headers:{'Content-Type':'application/json','X-Requested-With':'fetch'},body:b?JSON.stringify(b):undefined}).then(async r=>{const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||'Error'),{status:r.status});return j});
+const snap=()=>JSON.stringify({reqs:S.reqs,tables:S.tables,qd:S.qd,qx:S.qx,mej:S.mej,dg:S.dg});
+const typing=()=>/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+function applyWs(d){if(d.reqs)S.reqs=d.reqs;if(d.tables)S.tables=d.tables;S.qd=d.qd||{};S.qx=d.qx||{};S.mej=d.mej||[];S.dg=d.dg||[];ids()}
+async function loadWs(render){const r=await api('GET','/api/workspace');ver=r.version;if(r.data&&r.data.reqs){applyWs(r.data);last=snap()}else{S.reqs.forEach(q=>{q.com=[]});last=''}if(render&&S.role&&!typing())draw()}
+async function save(){
+ ids();
+ if(!API){try{localStorage.setItem(KEY,JSON.stringify({reqs:S.reqs,tables:S.tables,qd:S.qd,qx:S.qx,mej:S.mej,dg:S.dg,ints:S.ints,tokens:S.tokens}));if(S.role)setSv('Guardado en este navegador · '+hm())}catch(_){}return}
+ if(!S.role||saving)return;const s=snap();if(s===last)return;saving=true;
+ try{const r=await api('PUT','/api/workspace',{data:JSON.parse(s),version:ver});ver=r.version;last=s;setSv('Guardado · '+hm())}
+ catch(x){if(x.status===409){await loadWs(true);alert('Otra persona modificó el contenido; se cargó la última versión.')}else setSv('Sin conexión: reintentando…')}
+ finally{saving=false}}
+setInterval(save,1500);addEventListener('pagehide',save);
+setInterval(async()=>{if(!API||!S.role||saving)return;try{const r=await api('GET','/api/workspace');if(r.version>ver&&snap()===last){ver=r.version;applyWs(r.data);last=snap();if(!typing())draw()}}catch(_){}},8000);
+async function boot(){try{const u=await api('GET','/api/auth/me');API=true;return start(u)}catch(x){
+ if(x.status===401){API=true;return loginForm()}
+ API=false;try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d)Object.assign(S,d)}catch(_){}
+ S.qx=S.qx||{};S.mej=S.mej||[];S.dg=S.dg||[];ids();login()}}
+async function start(u){S.role=u.role;S.uid=u.id;S.email=u.email;S.tokens=u.tokens;S.users=[];await loadWs();S.view='dash';S.rv='list';S.cid=null;draw()}
+function loginForm(m){$('root').innerHTML=`<div class="login"><div class="logo">FUNTION <i>ANALYTS</i></div><p>Ingresá con tu cuenta o creá una de prueba (5 tokens).</p><label for="em">Correo</label><input id="em" type="email" autocomplete="username"><label for="pw">Contraseña (mínimo 10 caracteres)</label><input id="pw" type="password" autocomplete="current-password"><p class="er" id="er" role="alert">${e(m||'')}</p><div class="row"><button class="btn" onclick="auth('login')">Ingresar</button><button class="btn g" onclick="auth('register')">Crear cuenta de prueba</button></div></div>`}
+async function auth(k){try{await start(await api('POST','/api/auth/'+k,{email:$('em').value.trim(),password:$('pw').value}))}catch(x){$('er').textContent=x.message}}
+async function logout(){if(API){try{await flush();await api('POST','/api/auth/logout')}catch(_){}S.role=null;last='';return loginForm()}S.role=null;login()}
+function upgrade(){if(API)alert('Pedile al administrador que te pase al perfil Cliente.');else{S.role='cliente';draw()}}
+async function users(){try{const r=await api('GET','/api/admin/users');$('ul').innerHTML=`<div class="card"><h3>Usuarios registrados</h3><div class="sc"><table><tr><th>Correo</th><th>Perfil</th></tr>${r.map(u=>`<tr><td>${e(u.email)}</td><td>${u.email===S.email?e(u.role):`<select aria-label="Perfil de ${e(u.email)}" onchange="setRole(${Number(u.id)},this.value)">${Object.keys(ROLES).map(k=>`<option value="${k}" ${k===u.role?'selected':''}>${ROLES[k].n}</option>`).join('')}</select>`}</td></tr>`).join('')}</table></div></div>`}catch(x){}}
+async function setRole(id,role){try{await api('PUT','/api/admin/users/'+id,{role})}catch(x){alert(x.message)}users()}
+function intApi(){const f=(p,t,fs,extra)=>`<div class="card" id="i-${p}"><h3>${t}</h3>${fs.map(([n,l,ty])=>`<label>${l}</label><input name="${n}" type="${ty||'text'}" autocomplete="off">`).join('')}<div class="row"><button class="btn g" onclick="icon('${p}')">Guardar conexión</button></div>${extra}<p class="mu" id="m-${p}" role="status"></p></div>`;
+$('v').innerHTML=`<p class="mu">Las credenciales se guardan cifradas en el servidor. Solo Administrador y Cliente las usan.</p>`+
+f('jira','Jira y Confluence (Atlassian Cloud)',[['site','Sitio (empresa.atlassian.net)'],['email','Correo de Atlassian'],['token','API token','password']],`<label>Importar con JQL</label><input id="q-jira" value="project = ABC ORDER BY created DESC"><button class="btn" onclick="iimp('jira')">Importar como requerimientos</button><label style="margin-top:.7rem">Publicar el requerimiento abierto en Confluence (clave del espacio)</label><input id="sp" placeholder="ej. DOC"><button class="btn" onclick="ipub()">Publicar en Confluence</button>`)+
+f('azure','Azure DevOps',[['org','Organización'],['project','Proyecto'],['token','Personal Access Token','password']],`<input id="q-azure" type="hidden"><button class="btn" onclick="iimp('azure')">Importar historias como requerimientos</button>`)}
+const msg=(p,t)=>{const m=$('m-'+p);if(m)m.textContent=t};
+async function icon(p){const b={};document.querySelectorAll('#i-'+p+' input[name]').forEach(i=>b[i.name]=i.value.trim());try{await api('POST','/api/integrations/'+p,b);msg(p,'Conexión guardada')}catch(x){msg(p,x.message)}}
+async function iimp(p){try{const r=await api('POST','/api/integrations/'+p+'/import',{q:$('q-'+p).value});r.items.forEach(i=>S.reqs.push(mkReq(i.t,i.obj)));dirty();msg(p,r.items.length+' requerimientos importados (los ves en el listado de Requerimientos)')}catch(x){msg(p,x.message)}}
+async function ipub(){const q=curReq();if(!q)return msg('jira','Abrí primero un requerimiento en la sección Requerimientos.');try{const r=await api('POST','/api/integrations/confluence/publish',{space:$('sp').value.trim(),req:q});msg('jira','Publicado: '+r.url)}catch(x){msg('jira',x.message)}}
+boot();
+</script></body></html>

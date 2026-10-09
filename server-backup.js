@@ -24,77 +24,7 @@ const wrap = f => (q, s, n) => f(q, s, n).catch(x => { console.error(x); s.statu
 const okMail = m => typeof m === 'string' && m.length <= 120 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m);
 const esc = t => String(t ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const audit = (uid, action, ip) => pool.query('INSERT INTO audit_log(user_id,action,ip) VALUES($1,$2,$3)', [uid, action, ip]).catch(() => {});
-const pub = u => ({ id: u.id, email: u.email, role: u.role, tokens: u.tokens });
-const label = u => `${String(u.email).split('@')[0]} (${RN[u.role]})`;
-
-/* ---------- datos del espacio de trabajo: ids estables y validación ---------- */
-const ID_RE = /^[\w-]{1,64}$/;
-const goodId = v => typeof v === 'string' && ID_RE.test(v);
-const str = (v, n) => (typeof v === 'string' ? v : '').slice(0, n);
-const STAGES = ['Pruebas técnicas', 'Pruebas UAT', 'Prueba piloto', 'Deploy', 'Verificación QA'];
-const DG_TIPOS = ['proceso', 'carriles', 'secuencia', 'casos', 'estados'];
-const PRI = ['Alta', 'Media', 'Baja'], MEST = ['Pendiente', 'Planificada', 'Hecha'];
-// Agrega ids a requerimientos y comentarios que no los tengan (datos anteriores a esta versión). Devuelve true si cambió algo.
-function norm(d) {
-  let ch = false;
-  (Array.isArray(d.reqs) ? d.reqs : []).forEach(r => {
-    if (!r || typeof r !== 'object') return;
-    if (!goodId(r.id)) { r.id = crypto.randomUUID(); ch = true; }
-    if (!Array.isArray(r.com)) { r.com = []; ch = true; }
-    r.com.forEach(c => { if (c && !goodId(c.id)) { c.id = crypto.randomUUID(); ch = true; } });
-  });
-  return ch;
-}
-// Los comentarios los gobiernan los endpoints /api/comments; el guardado general nunca los modifica.
-function cleanReqs(incoming, current) {
-  const old = new Map((current || []).filter(r => r && goodId(r.id)).map(r => [r.id, r]));
-  return incoming.filter(r => r && typeof r === 'object' && !Array.isArray(r)).map(r => {
-    const id = goodId(r.id) ? r.id : crypto.randomUUID();
-    return { ...r, id, com: (old.get(id) || {}).com || [] };
-  });
-}
-function cleanQx(v) {
-  const o = {};
-  if (v && typeof v === 'object' && !Array.isArray(v))
-    STAGES.forEach(s => { if (Array.isArray(v[s])) o[s] = [...new Set(v[s].filter(x => typeof x === 'string' && x.trim()).map(x => x.trim().slice(0, 120)))].slice(0, 50); });
-  return o;
-}
-function cleanQd(v) {
-  const o = {};
-  if (v && typeof v === 'object' && !Array.isArray(v))
-    Object.keys(v).slice(0, 1000).forEach(k => { if (v[k] === true && k.length <= 300) o[k] = true; });
-  return o;
-}
-// Para listas con autor: lo ya existente conserva autor y fecha; lo nuevo se firma con el usuario autenticado.
-function cleanList(incoming, current, user, shape) {
-  const old = new Map((current || []).filter(x => x && goodId(x.id)).map(x => [x.id, x]));
-  return incoming.slice(0, 500).filter(x => x && typeof x === 'object' && !Array.isArray(x)).map(x => {
-    const id = goodId(x.id) ? x.id : crypto.randomUUID(), prev = old.get(id);
-    return { ...shape(x), id, by: prev ? prev.by : label(user), at: prev ? prev.at : Date.now() };
-  });
-}
-const shapeMej = x => ({ t: str(x.t, 300), pri: PRI.includes(x.pri) ? x.pri : 'Media', est: MEST.includes(x.est) ? x.est : 'Pendiente', rid: goodId(x.rid) ? x.rid : '' });
-const shapeDg = x => ({ t: str(x.t, 120) || 'Diagrama', tipo: DG_TIPOS.includes(x.tipo) ? x.tipo : 'proceso', src: str(x.src, 6000), rid: goodId(x.rid) ? x.rid : '' });
-
-// Ejecuta fn(datos) dentro de una transacción sobre el espacio de trabajo. Si fn devuelve {err, code}, se revierte.
-async function mutate(fn) {
-  const c = await pool.connect();
-  try {
-    await c.query('BEGIN');
-    const { rows } = await c.query('SELECT data FROM workspace WHERE id=1 FOR UPDATE');
-    const d = rows[0].data || {};
-    norm(d);
-    const out = fn(d);
-    if (out && out.err) { await c.query('ROLLBACK'); return out; }
-    await c.query('UPDATE workspace SET data=$1, version=version+1 WHERE id=1', [d]);
-    await c.query('COMMIT');
-    return out || { ok: 1 };
-  } catch (x) { await c.query('ROLLBACK').catch(() => {}); throw x; } finally { c.release(); }
-}
-const findCom = (d, cid) => {
-  for (const r of d.reqs || []) { const i = (r.com || []).findIndex(c => c && c.id === cid); if (i >= 0) return { r, i }; }
-  return null;
-};
+const pub = u => ({ email: u.email, role: u.role, tokens: u.tokens });
 const sign = u => jwt.sign({ id: u.id }, JWT_SECRET, { expiresIn: '2h' });
 const setCookie = (s, t) => s.cookie('fa_token', t, { httpOnly: true, secure: prod, sameSite: 'strict', maxAge: 2 * 3600 * 1000 });
 const dummyHash = bcrypt.hashSync('dummy-password', 12);
@@ -118,9 +48,23 @@ async function init() {
 /* ---------- app y seguridad ---------- */
 const app = express();
 app.set('trust proxy', 1);
-app.use(helmet({ contentSecurityPolicy: { directives: {
-  defaultSrc: ["'self'"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-  fontSrc: ['https://fonts.gstatic.com'], imgSrc: ["'self'", 'data:'], connectSrc: ["'self'"], frameAncestors: ["'none'"], objectSrc: ["'none'"] } } }));
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://googleapis.com"],
+      fontSrc: ["'self'", "https://gstatic.com"],
+      imgSrc: ["'self'", 'data:'],
+      connectSrc: ["'self'"],
+      scriptSrcAttr: ["'unsafe-inline'"]
+    }
+  }
+}));
+
+//app.use(helmet({ contentSecurityPolicy: { directives: {
+//  defaultSrc: ["'self'"], scriptSrc: ["'self'", "'unsafe-inline'"], styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+ // fontSrc: ['https://fonts.gstatic.com'], imgSrc: ["'self'", 'data:'], connectSrc: ["'self'"], frameAncestors: ["'none'"], objectSrc: ["'none'"] } } }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookie());
 app.use('/api', (q, s, n) => (q.method === 'GET' || q.get('x-requested-with') === 'fetch') ? n() : s.status(403).json({ error: 'Solicitud no permitida' })); // defensa CSRF extra
@@ -168,12 +112,7 @@ app.get('/api/auth/me', auth, (q, s) => s.json(pub(q.user)));
 
 /* ---------- workspace compartido ---------- */
 app.get('/api/workspace', auth, wrap(async (q, s) => {
-  let w = (await pool.query('SELECT data,version FROM workspace WHERE id=1')).rows[0];
-  if (norm(w.data)) { // datos anteriores sin ids: se completan una sola vez
-    const r = await pool.query('UPDATE workspace SET data=$1, version=version+1 WHERE id=1 AND version=$2 RETURNING data,version', [w.data, w.version]);
-    w = r.rows[0] || (await pool.query('SELECT data,version FROM workspace WHERE id=1')).rows[0];
-  }
-  s.json(w);
+  const { rows } = await pool.query('SELECT data,version FROM workspace WHERE id=1'); s.json(rows[0]);
 }));
 app.put('/api/workspace', auth, wrap(async (q, s) => {
   const { data, version } = q.body || {};
@@ -183,60 +122,28 @@ app.put('/api/workspace', auth, wrap(async (q, s) => {
     await c.query('BEGIN');
     const { rows } = await c.query('SELECT data,version FROM workspace WHERE id=1 FOR UPDATE');
     if (rows[0].version !== version) { await c.query('ROLLBACK'); return s.status(409).json({ error: 'Conflicto de versión' }); }
-    const nd = rows[0].data || {};
-    if (EDIT.includes(q.user.role)) { // analistas: requerimientos, modelo de datos, ítems de prueba propios y diagramas
-      if (Array.isArray(data.reqs) && data.reqs.length <= 500) nd.reqs = cleanReqs(data.reqs, nd.reqs);
+    let nd = rows[0].data || {};
+    if (EDIT.includes(q.user.role)) {
+      if (Array.isArray(data.reqs) && data.reqs.length <= 500) nd.reqs = data.reqs;
       if (Array.isArray(data.tables) && data.tables.length <= 200) nd.tables = data.tables;
-      if (data.qx !== undefined) nd.qx = cleanQx(data.qx);
-      if (Array.isArray(data.dg)) nd.dg = cleanList(data.dg, nd.dg, q.user, shapeDg).slice(0, 200);
     }
-    if (data.qd !== undefined) nd.qd = cleanQd(data.qd); // el checklist lo tildan todos los perfiles
-    if (Array.isArray(data.mej)) nd.mej = cleanList(data.mej, nd.mej, q.user, shapeMej); // mejoras a futuro: todos los perfiles aportan
-    norm(nd);
+    if (data.qd && typeof data.qd === 'object' && !Array.isArray(data.qd)) nd.qd = data.qd; // el checklist lo tildan todos los perfiles
     const r = await c.query('UPDATE workspace SET data=$1, version=version+1 WHERE id=1 RETURNING version', [nd]);
     await c.query('COMMIT'); s.json({ version: r.rows[0].version });
   } catch (x) { await c.query('ROLLBACK').catch(() => {}); throw x; } finally { c.release(); }
 }));
-
-/* ---------- comentarios: cualquiera comenta; edita o elimina el autor o el administrador ---------- */
-const okText = t => typeof t === 'string' && t.trim() && t.length <= 1000;
 app.post('/api/comments', auth, wrap(async (q, s) => {
-  const { rid, i, text } = q.body || {};
-  if (!okText(text) || !(goodId(rid) || Number.isInteger(i))) return s.status(400).json({ error: 'Comentario inválido' });
-  const out = await mutate(d => {
-    const r = goodId(rid) ? (d.reqs || []).find(x => x.id === rid) : (d.reqs || [])[i];
-    if (!r) return { err: 'Requerimiento inexistente', code: 404 };
-    r.com.push({ id: crypto.randomUUID(), uid: q.user.id, rol: q.user.role, w: label(q.user), x: text.trim(), at: Date.now() });
-  });
-  out.err ? s.status(out.code).json({ error: out.err }) : s.json({ ok: 1 });
-}));
-app.put('/api/comments/:cid', auth, wrap(async (q, s) => {
-  const cid = q.params.cid, { text } = q.body || {};
-  if (!goodId(cid) || !okText(text)) return s.status(400).json({ error: 'Comentario inválido' });
-  const out = await mutate(d => {
-    const f = findCom(d, cid); if (!f) return { err: 'Comentario inexistente', code: 404 };
-    const c = f.r.com[f.i];
-    if (q.user.role !== 'admin' && c.uid !== q.user.id) return { err: 'Solo el autor o un administrador puede editarlo', code: 403 };
-    c.x = text.trim(); c.ed = 1;
-  });
-  if (out.err) return s.status(out.code).json({ error: out.err });
-  audit(q.user.id, 'comment:edit:' + cid, q.ip); s.json({ ok: 1 });
-}));
-app.delete('/api/comments/:cid', auth, wrap(async (q, s) => {
-  const cid = q.params.cid;
-  if (!goodId(cid)) return s.status(400).json({ error: 'Comentario inválido' });
-  const out = await mutate(d => {
-    const f = findCom(d, cid); if (!f) return { err: 'Comentario inexistente', code: 404 };
-    if (q.user.role !== 'admin' && f.r.com[f.i].uid !== q.user.id) return { err: 'Solo el autor o un administrador puede eliminarlo', code: 403 };
-    f.r.com.splice(f.i, 1);
-  });
-  if (out.err) return s.status(out.code).json({ error: out.err });
-  audit(q.user.id, 'comment:delete:' + cid, q.ip); s.json({ ok: 1 });
-}));
-
-/* ---------- usuarios asignables (solo quien puede asignar) ---------- */
-app.get('/api/users', auth, need('admin', 'cliente'), wrap(async (q, s) => {
-  s.json((await pool.query('SELECT id,email,role FROM users ORDER BY email')).rows);
+  const { i, text } = q.body || {};
+  if (!Number.isInteger(i) || typeof text !== 'string' || !text.trim() || text.length > 1000) return s.status(400).json({ error: 'Comentario inválido' });
+  const c = await pool.connect();
+  try {
+    await c.query('BEGIN');
+    const { rows } = await c.query('SELECT data FROM workspace WHERE id=1 FOR UPDATE');
+    const d = rows[0].data; if (!d.reqs || !d.reqs[i]) { await c.query('ROLLBACK'); return s.status(404).json({ error: 'Requerimiento inexistente' }); }
+    (d.reqs[i].com = d.reqs[i].com || []).push({ w: `${q.user.email.split('@')[0]} (${RN[q.user.role]})`, x: text.trim() });
+    await c.query('UPDATE workspace SET data=$1, version=version+1 WHERE id=1', [d]);
+    await c.query('COMMIT'); s.json({ ok: 1 });
+  } catch (x) { await c.query('ROLLBACK').catch(() => {}); throw x; } finally { c.release(); }
 }));
 
 /* ---------- tokens y administración ---------- */
